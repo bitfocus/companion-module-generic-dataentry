@@ -1,6 +1,6 @@
 {
 	"id": "generic-dataentry",
-	"name": "MUX KVM-Switch",
+	"name": "Data Entry",
 	"shortname": "dataentry",
 	"description": "Enter and present userdata",
 	"version": "0.9.0",
@@ -22,5 +22,5 @@
 	"legacyIds": [],
 	"manufacturer": "Generic",
 	"products": ["Data Entry"],
-	"keywords": ["Data", "Variables", "Keypad", "Numpad", "Keyboard", "Data", "format"]
+	"keywords": ["Data", "Variables", "Keypad", "Numpad", "Keyboard", "format"]
 }

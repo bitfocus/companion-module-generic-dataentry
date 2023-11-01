@@ -378,7 +378,8 @@ module.exports = function (self) {
 
 				// Update variables
 				self.entry_formatted = await self.formatData(self.entry_raw)
-				self.entry_raw.slice(0, self.entry_cursor_position) +
+				self.entry_cursor =
+					self.entry_raw.slice(0, self.entry_cursor_position) +
 					self.config.cursor +
 					self.entry_raw.slice(self.entry_cursor_position)
 				self.setVariableValues({
@@ -735,8 +736,8 @@ module.exports = function (self) {
 					id: 'criterialogic',
 					label: 'Enter Criteria',
 					choices: [
-						{ id: 'or', label: 'Any checked applys (OR)' },
-						{ id: 'and', label: 'All checked apply (AND)' },
+						{ id: 'or', label: 'Any checked criterion is met (OR)' },
+						{ id: 'and', label: 'All checked cruteria are met (AND)' },
 					],
 					default: self.config.criterialogic || 'or',
 				},

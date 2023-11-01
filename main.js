@@ -11,6 +11,10 @@ class DataEntryInstance extends InstanceBase {
 		super(internal)
 	}
 
+	/**
+	 * Initialization of module
+	 * @param {*} config config provided from core
+	 */
 	async init(config) {
 		this.config = config
 		this.updateStatus(InstanceStatus.Ok)
@@ -54,7 +58,9 @@ class DataEntryInstance extends InstanceBase {
 		this.updatePresetDefinitions()
 	}
 
-	// When module gets deleted
+	/**
+	 * Cleanup stuff, get's called when module is destroyed
+	 */
 	async destroy() {
 		if (this.timeout) clearTimeout(this.timeout)
 		this.log('debug', 'destroy')
@@ -87,7 +93,9 @@ class DataEntryInstance extends InstanceBase {
 		)
 	}
 
-	// Return config fields for web config
+	/**
+	 * Return config fields for web config
+	 */
 	getConfigFields() {
 		return [
 			{
@@ -174,8 +182,8 @@ class DataEntryInstance extends InstanceBase {
 				label: 'Enter Criteria',
 				width: 12,
 				choices: [
-					{ id: 'or', label: 'Any checked applys (OR)' },
-					{ id: 'and', label: 'All checked apply (AND)' },
+					{ id: 'or', label: 'Any checked criterion is met (OR)' },
+					{ id: 'and', label: 'All checked cruteria are met (AND)' },
 				],
 				default: 'or',
 			},
@@ -225,6 +233,7 @@ class DataEntryInstance extends InstanceBase {
 				label: 'Cursor Character',
 				width: 6,
 				default: '|',
+				regex: '/^.$/',
 			},
 		]
 	}
@@ -244,7 +253,7 @@ class DataEntryInstance extends InstanceBase {
 	}
 
 	/**
-	 * checks if an automatic enter should be done
+	 * Checks if an automatic enter should be done
 	 * @param {*} timer set to truthy value if this check is performed from a timer event
 	 * @returns void
 	 */
@@ -285,6 +294,9 @@ class DataEntryInstance extends InstanceBase {
 		}
 	}
 
+	/**
+	 * Cancels the timeout if there is one
+	 */
 	cancelTimeout() {
 		if (this.timeout) {
 			clearTimeout(this.timeout)
@@ -292,15 +304,26 @@ class DataEntryInstance extends InstanceBase {
 		}
 	}
 
+	/**
+	 * Restarts the timer for the timeout
+	 */
 	restartTimeout() {
 		this.cancelTimeout()
 		this.timeout = setTimeout(this.fireTimeout.bind(this), this.config.timeout * 1000)
 	}
 
+	/**
+	 * Gets called when the timeout runs out
+	 */
 	fireTimeout() {
 		this.checkEnter(true)
 	}
 
+	/**
+	 * Enter data
+	 * Handles all variables needed when data is entered
+	 * @param {'raw'|'formatted'|undefined} copy  if unset use the copy preference from configuration, if set copy this
+	 */
 	enter(copy) {
 		this.cancelTimeout()
 		if (copy === undefined) copy = this.config.copydata
@@ -332,6 +355,11 @@ class DataEntryInstance extends InstanceBase {
 		self.checkFeedbacks('valid')
 	}
 
+	/**
+	 * Farmats a string according to preference in configuration and returns the formatted result
+	 * @param {string} string the string to format
+	 * @returns {string} the formatted string, if format is invalid it returns the original string
+	 */
 	async formatData(string) {
 		let formatstr = await this.parseVariablesInString(this.config.format)
 		let formatted = ''
@@ -360,6 +388,9 @@ class DataEntryInstance extends InstanceBase {
 		return formatted
 	}
 
+	/**
+	 * Clears the data in entry_raw and updates variables
+	 */
 	clearRaw() {
 		this.entry_raw = ''
 		this.entry_cursor = this.config.cursor
@@ -374,24 +405,40 @@ class DataEntryInstance extends InstanceBase {
 		})
 	}
 
+	/**
+	 * Releases a modifier
+	 * @param {number} modifier which modifier to release
+	 */
 	releaseModifier(modifier) {
 		this.modifier[modifier].controls.clear()
 		this.modifier[modifier].effective = false
 		this.modifier[modifier].onetime = false
 	}
 
+	/**
+	 * Update the action definitions to core
+	 */
 	updateActions() {
 		UpdateActions(this)
 	}
 
+	/**
+	 * Update the feedback definitions to core
+	 */
 	updateFeedbacks() {
 		UpdateFeedbacks(this)
 	}
 
+	/**
+	 * Update the variable definitions to core
+	 */
 	updateVariableDefinitions() {
 		UpdateVariableDefinitions(this)
 	}
 
+	/**
+	 * Update the preset definitions to core
+	 */
 	updatePresetDefinitions() {
 		UpdatePresetDefinitions(this)
 	}
