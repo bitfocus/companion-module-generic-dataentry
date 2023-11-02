@@ -93,7 +93,12 @@ module.exports = async function (self) {
 						break
 				}
 
-				return self.buildRegex(options.regex).test(string)
+				try {
+					return self.buildRegex(options.regex).test(string)
+				} catch (error) {
+					self.log('error', 'Testing for regular expression in feedback failed, ' + error.message)
+					return false
+				}
 			},
 		},
 	})

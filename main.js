@@ -248,7 +248,12 @@ class DataEntryInstance extends InstanceBase {
 		if (parts === null) {
 			return new RegExp('^\b$') // if input is not a valid regexp, return valid regexp which never matches
 		} else {
-			return new RegExp(parts[1], parts[2])
+			try {
+				return new RegExp(parts[1], parts[2])
+			} catch (error) {
+				this.log('error', `Cannot compile regular expression from "${string}", ${error.message}`)
+				return new RegExp('^\b$')
+			}
 		}
 	}
 
@@ -356,9 +361,14 @@ class DataEntryInstance extends InstanceBase {
 	async formatData(string) {
 		let formatstr = await this.parseVariablesInString(this.config.format)
 		let formatted = ''
-		let formatregex = formatstr.match(/^\/(.+)\/(.*)\/([gmiyusvd]?)$/)
+		let formatregex = formatstr.match(/^\/(.+)(?<!\\)\/(.*)\/([gmiyusvd]?)$/)
 		if (Array.isArray(formatregex)) {
-			formatted = string.replace(new RegExp(formatregex[1], formatregex[3]), formatregex[2])
+			try {
+				formatted = string.replace(new RegExp(formatregex[1], formatregex[3]), formatregex[2].replaceAll('\\/', '/'))
+			} catch (error) {
+				formatted = string
+				this.log('error', `Regex formatting failed: ${error.message}`)
+			}
 		} else if (formatstr.match(/%./)) {
 			formatted = format(formatstr, string)
 		} else if (formatstr === 'shellArg') {

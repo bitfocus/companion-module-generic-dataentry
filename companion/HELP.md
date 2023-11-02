@@ -28,8 +28,10 @@ Much of the general behavior is configured here. Parts of the configuration can 
 	There are a few different possibilities how formatting can be done:
 	- Regular Expression Replacement  
     If your format looks like "/some regex/some replacement/optional modifiers", it will apply this replacement.  
-		This is very powerful, but also may be hard to understand. Especially as normally regular expressions are not build to match partially entered strings. If you want to have good formatting with a regex replacement and at the same time want this while the string can also be incomplete, you have to master regex.
-		More easy replacements can be done if you only want to replace characters or words. E.g. the pattern /./*/g will replace every character with a * like in a password entry field.
+		This is very powerful, but also may be hard to understand. Especially as normally regular expressions are not build to match partially entered strings. If you want to have good formatting with a regex replacement and at the same time want this while the string can also be incomplete, you have to master regex.  
+		Because the slash is used to denote the boundaries of the search and the replacement patterns, it has to be escaped if you want to use it in a pattern with a leading backslash.
+		More easy replacements can be done if you only want to replace characters or words. E.g. the pattern /./*/g will replace every character with a * like in a password entry field.  
+		/(.)(..)$/$1\/$2/ This regex will insert a slash in front of the second last char
 	- printf notation  
     This is most useful for number formatting. It can be used to bring numbers in a wanted format like with a fixed precision or with padding or can convert numbers to a different radix. You have to give the format string in [printf notation](https://en.wikipedia.org/wiki/Printf) and the entry_raw will be used as the argument.  
 		The following list shows the most common keywords:
@@ -49,12 +51,14 @@ Much of the general behavior is configured here. Parts of the configuration can 
     - %x to unsigned hexadecimal, force pairs of symbols (e.g. 'f' -> '0f')
     - %o to unsigned octal
     - %b to unsigned binary
-    - %X string/binary/buffer to hexadecimal: convert a string into hex charcodes, force pair of symbols (e.g. 'f' -> '0f' ; 'hello' -> '68656c6c6f')
-    - %z string/binary/buffer to base64
-    - %Z string/binary/buffer to base64url
+    - %X string to hexadecimal: convert a string into hex charcodes, force pair of symbols (e.g. 'f' -> '0f' ; 'hello' -> '68656c6c6f')
+    - %z string to base64
+    - %Z string to base64url
     - %J to JSON (call JSON.stringify()
 
-   Many keywords can have parameters, wich are put in between the % and the letter. The parameters can be used for aligning, padding, truncating, rounding and so on. E.g. %[.2]f would give a floating point representation rounded to two digits and the are always shown, even when zero.
+   Many keywords can have parameters, wich are put in between the % and the letter. The parameters can be used for aligning, padding, truncating, rounding and so on. E.g. %[.2!]f would give a floating point representation rounded to two digits and the are always shown, even when zero.  
+	 %[z5]f would give a number which is padded with zeroes to minimum five chars.  
+	 %[g_]f would insert a _ every three chars to mark thousands group.
 
 - special keywords  
   If you enter one of these keywords exactly like given here, the entry_raw will be formatted to be consumed by the following:
