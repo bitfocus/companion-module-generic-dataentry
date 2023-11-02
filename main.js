@@ -260,19 +260,12 @@ class DataEntryInstance extends InstanceBase {
 	checkEnter(timer) {
 		// with 'or' any configured automation will enter
 		if (this.config.criterialogic === 'or') {
-			if (this.config.autotime && timer) {
-				this.enter()
-				return
-			}
-			if (this.config.autolengthraw && this.entry_raw.length >= this.config.enterlengthraw) {
-				this.enter()
-				return
-			}
-			if (this.config.autolengthformatted && this.entry_formatted.length >= this.config.enterlengthformatted) {
-				this.enter()
-				return
-			}
-			if (this.config.autoregex && this.buildRegex(this.config.enterregex).test(this.entry_raw)) {
+			if (
+				(this.config.autotime && timer) ||
+				(this.config.autolengthraw && this.entry_raw.length >= this.config.enterlengthraw) ||
+				(this.config.autolengthformatted && this.entry_formatted.length >= this.config.enterlengthformatted) ||
+				(this.config.autoregex && this.buildRegex(this.config.enterregex).test(this.entry_raw))
+			) {
 				this.enter()
 				return
 			}
@@ -352,7 +345,7 @@ class DataEntryInstance extends InstanceBase {
 			this.clearRaw()
 		}
 
-		self.checkFeedbacks('valid')
+		this.checkFeedbacks('valid')
 	}
 
 	/**

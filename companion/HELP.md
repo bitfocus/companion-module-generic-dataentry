@@ -20,18 +20,18 @@ Much of the general behavior is configured here. Parts of the configuration can 
   If you activate this option, every time you make a change to the data a timer will be triggered and once the timer runs out, the data is entered automatically. This may be useful if you don't have much space on your buttons and don't want an enter button. Just type your data and wait a little time for them tho being entered automatically.
 * Enter Criteria  
   Specify if you want the automatic enter occur if any of the above criteria is met or all of them.  
-	A useful combination could be lengh, time and all of them. So the timer doesn't fire until the minimum length is met.
+	A useful combination could be length, time and all of them. So the timer doesn't fire until the minimum length is met.
 * When entering... and After entering...  
   Define what to do with the data when enter occurs. You'll get it.
 * Format  
   This can be used to specify how the formatted output should be formatted.  
 	There are a few different possibilities how formatting can be done:
 	- Regular Expression Replacement  
-    If you format looks like "/some regex/some replacement/optional modifiers", it will apply this replacement.  
+    If your format looks like "/some regex/some replacement/optional modifiers", it will apply this replacement.  
 		This is very powerful, but also may be hard to understand. Especially as normally regular expressions are not build to match partially entered strings. If you want to have good formatting with a regex replacement and at the same time want this while the string can also be incomplete, you have to master regex.
-		More easy replacements can be done if you only want to replace characters or words. E.g. the pattern /./*/g will replacve every character with a * like in a password entry field.
-	- sprintf notation  
-    This is most useful for number formatting. It can be used to bring numbers in a wanted format like with a fixed precision or with padding or can convert numbers to a different radix. You have to give the format string in [sprintf notation](https://en.wikipedia.org/wiki/Printf) and the entry_raw will be used as the argument.  
+		More easy replacements can be done if you only want to replace characters or words. E.g. the pattern /./*/g will replace every character with a * like in a password entry field.
+	- printf notation  
+    This is most useful for number formatting. It can be used to bring numbers in a wanted format like with a fixed precision or with padding or can convert numbers to a different radix. You have to give the format string in [printf notation](https://en.wikipedia.org/wiki/Printf) and the entry_raw will be used as the argument.  
 		The following list shows the most common keywords:
     
     - %f to (float) number
