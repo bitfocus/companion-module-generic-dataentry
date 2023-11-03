@@ -23,52 +23,49 @@ Much of the general behavior is configured here. Parts of the configuration can 
 	A useful combination could be length, time and all of them. So the timer doesn't fire until the minimum length is met.
 * When entering... and After entering...  
   Define what to do with the data when enter occurs. You'll get it.
-* Format  
+* Format Type
   This can be used to specify how the formatted output should be formatted.  
 	There are a few different possibilities how formatting can be done:
-	- Regular Expression Replacement  
+	- None  
+    Easy, there will be no formatting which gives the best performance obviously by just using the same result for farmatted as raw.
+	- Spreadsheet Types  
+    When you type data in a cell of your favourite spreadsheet application, it will try to format it for you. There are two parts of it, first it will try to detect what kind of data you are entering and then it will format it to your liking.  
+		You can do both with this module as well. If you choose 'automatic' it will try to automatically detect the type of the entered data as text, a number, a date or a time. If you don't want to have this guesswork, you can also deliberately choose one of the data types. Second you can set up how the data should be presented, exactly the way like you are used from spreadsheet apps. E.g. 0000.00 will always show a number with at least four digits and rounded to two decimals. [Here](https://support.microsoft.com/en-us/office/review-guidelines-for-customizing-a-number-format-c0a1d1fa-d3f4-4018-96b7-9c9354dd99f5) is the full documentation.  
+		This module also allows to mess with locales. If you add a locale string in curly brackets like 0.00{de-DE} the output will be 0,00 instead of 0.00 as the decimal separator in Germani is the comma. Locales so far only are working for the formatting, not for the interpreting. That means if you want to enter a date you have to do it in US notation like mm/dd/yy but the you can format it in your locale. Supported locales are: cs, da, de, el, en, es, fi, fr, hu, is, id, it, ja, ko, nb, nl, pl, pt, ru, sk, sv, th, tr, zh.
+
+	- printf notation  
+    This is most useful for number formatting. It can be used to bring numbers in a wanted format like with a fixed precision or with padding or can convert numbers to a different radix. You have to give the format string in [printf notation](https://en.wikipedia.org/wiki/Printf) and the entry_raw will be used as the argument.  
+		The following list shows the most common keywords:
+      - %f to (float) number
+      - %k to number with metric system prefixes (like k, M, G, and so on...)
+      - %e to exponential “E notation” (e.g. 13 -> 1.23e+2)
+      - %K to scientific notation (e.g. 123 -> 1.23 × 10²)
+      - %i to integer
+      - %u to unsigned integer
+      - %U to unsigned positive integer (>0)
+      - %P to (absolute) percent (e.g.: 1.25 -> 125% ; 0.75 -> 75%)
+      - %p to relative percent (e.g.: 1.25 -> +25% ; 0.75 -> -25%)
+      - %t to time duration, convert ms into H:min:s
+      - %m to degrees/minutes/seconds notation
+      - %h to unsigned hexadecimal
+      - %x to unsigned hexadecimal, force pairs of symbols (e.g. 'f' -> '0f')
+      - %o to unsigned octal
+      - %b to unsigned binary
+      - %X string to hexadecimal: convert a string into hex charcodes, force pair of symbols (e.g. 'f' -> '0f' ; 'hello' -> '68656c6c6f')
+      - %z string to base64
+      - %Z string to base64url
+      - %J to JSON (call JSON.stringify()
+  
+		Many keywords can have parameters, wich are put in between the % and the letter. The parameters can be used for aligning, padding, truncating, rounding and so on. E.g. %[.2!]f would give a floating point representation rounded to two digits and the are always shown, even when zero.  
+		%[z5]f would give a number which is padded with zeroes to minimum five chars.  
+		%[g_]f would insert a _ every three chars to mark thousands group.
+
+  - Regular Expression Replacement  
     If your format looks like "/some regex/some replacement/optional modifiers", it will apply this replacement.  
 		This is very powerful, but also may be hard to understand. Especially as normally regular expressions are not build to match partially entered strings. If you want to have good formatting with a regex replacement and at the same time want this while the string can also be incomplete, you have to master regex.  
 		Because the slash is used to denote the boundaries of the search and the replacement patterns, it has to be escaped if you want to use it in a pattern with a leading backslash.
 		More easy replacements can be done if you only want to replace characters or words. E.g. the pattern /./*/g will replace every character with a * like in a password entry field.  
 		/(.)(..)$/$1\/$2/ This regex will insert a slash in front of the second last char
-	- printf notation  
-    This is most useful for number formatting. It can be used to bring numbers in a wanted format like with a fixed precision or with padding or can convert numbers to a different radix. You have to give the format string in [printf notation](https://en.wikipedia.org/wiki/Printf) and the entry_raw will be used as the argument.  
-		The following list shows the most common keywords:
-    
-    - %f to (float) number
-    - %k to number with metric system prefixes (like k, M, G, and so on...)
-    - %e to exponential “E notation” (e.g. 13 -> 1.23e+2)
-    - %K to scientific notation (e.g. 123 -> 1.23 × 10²)
-    - %i to integer
-    - %u to unsigned integer
-    - %U to unsigned positive integer (>0)
-    - %P to (absolute) percent (e.g.: 1.25 -> 125% ; 0.75 -> 75%)
-    - %p to relative percent (e.g.: 1.25 -> +25% ; 0.75 -> -25%)
-    - %t to time duration, convert ms into H:min:s
-    - %m to degrees/minutes/seconds notation
-    - %h to unsigned hexadecimal
-    - %x to unsigned hexadecimal, force pairs of symbols (e.g. 'f' -> '0f')
-    - %o to unsigned octal
-    - %b to unsigned binary
-    - %X string to hexadecimal: convert a string into hex charcodes, force pair of symbols (e.g. 'f' -> '0f' ; 'hello' -> '68656c6c6f')
-    - %z string to base64
-    - %Z string to base64url
-    - %J to JSON (call JSON.stringify()
-
-   Many keywords can have parameters, wich are put in between the % and the letter. The parameters can be used for aligning, padding, truncating, rounding and so on. E.g. %[.2!]f would give a floating point representation rounded to two digits and the are always shown, even when zero.  
-	 %[z5]f would give a number which is padded with zeroes to minimum five chars.  
-	 %[g_]f would insert a _ every three chars to mark thousands group.
-
-- special keywords  
-  If you enter one of these keywords exactly like given here, the entry_raw will be formatted to be consumed by the following:
-	- shellArg for Arguments of a shell command
-	- regExp for a literal matchin string
-	- regExpReplacement for the replacement part of a regex
-	- html for html content
-	- htmlAttr for the content of a html tag attribute
-	- htmlSpecialChars for a replacement of all html special characters
-	- control for escaping all ASCII control characters
 
 * Maximum entry length before truncation  
   Data can become quite large, sometimes you want to limit the length of data one can enter. Here's the place to do this.

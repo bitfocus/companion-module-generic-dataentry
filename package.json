@@ -12,6 +12,7 @@
 	},
 	"dependencies": {
 		"@companion-module/base": "~1.5.1",
+		"numfmt": "^2.5.2",
 		"string-kit": "^0.17.10"
 	},
 	"devDependencies": {

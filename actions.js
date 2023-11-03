@@ -757,11 +757,51 @@ module.exports = function (self) {
 			name: 'Set Format',
 			options: [
 				{
+					type: 'dropdown',
+					id: 'formattype',
+					label: 'Format Type',
+					choices: [
+						{ id: 'none', label: 'None' },
+						{ id: 'excelauto', label: 'Spreadsheet automatic' },
+						{ id: 'excelstring', label: 'Spreadsheet text' },
+						{ id: 'excelnumber', label: 'Spreadsheet number' },
+						{ id: 'exceldate', label: 'Spreadsheet date' },
+						{ id: 'exceltime', label: 'Spreadsheet time' },
+						{ id: 'excelbool', label: 'Spreadsheet boolean' },
+						{ id: 'printf', label: 'Printf like' },
+						{ id: 'regex', label: 'Regular Expression' },
+					],
+					default: self.config.formattype,
+				},
+				{
 					type: 'textinput',
-					id: 'format',
-					label: 'Format',
+					id: 'formatexcel',
+					label: 'Spreadsheet format expression',
+					default: self.config.formatexcel,
 					useVariables: true,
-					default: self.config.format || '*',
+					isVisible: (opt) => {
+						return opt.formattype.startsWith('excel')
+					},
+				},
+				{
+					type: 'textinput',
+					id: 'formatprintf',
+					label: 'printf format expression',
+					default: self.config.formatfrintf,
+					useVariables: true,
+					isVisible: (opt) => {
+						return opt.formattype === 'printf'
+					},
+				},
+				{
+					type: 'textinput',
+					id: 'formatregex',
+					label: 'Regular replacement expression',
+					default: self.config.formatregex,
+					useVariables: true,
+					isVisible: (opt) => {
+						return opt.formattype === 'regex'
+					},
 				},
 			],
 			callback: async ({ options }) => {

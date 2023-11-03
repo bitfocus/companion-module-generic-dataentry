@@ -5,6 +5,7 @@ const UpdateFeedbacks = require('./feedbacks')
 const UpdateVariableDefinitions = require('./variables')
 const UpdatePresetDefinitions = require('./presets')
 const { format, escape } = require('string-kit')
+const numfmt = require('numfmt')
 
 class DataEntryInstance extends InstanceBase {
 	constructor(internal) {
@@ -210,12 +211,65 @@ class DataEntryInstance extends InstanceBase {
 				default: 'clear',
 			},
 			{
+				type: 'dropdown',
+				id: 'formattype',
+				label: 'Format Type',
+				width: 6,
+				choices: [
+					{ id: 'none', label: 'None' },
+					{ id: 'excelauto', label: 'Spreadsheet automatic' },
+					{ id: 'excelstring', label: 'Spreadsheet text' },
+					{ id: 'excelnumber', label: 'Spreadsheet number' },
+					{ id: 'exceldate', label: 'Spreadsheet date' },
+					{ id: 'exceltime', label: 'Spreadsheet time' },
+					{ id: 'excelbool', label: 'Spreadsheet boolean' },
+					{ id: 'printf', label: 'Printf like' },
+					{ id: 'regex', label: 'Regular Expression' },
+				],
+				default: 'none',
+			},
+			{
+				type: 'static-text',
+				id: 'placeholder',
+				label: '',
+				value: '',
+				width: 6,
+				isVisible: (opt) => {
+					return opt.formattype === 'none'
+				},
+			},
+			{
 				type: 'textinput',
-				id: 'format',
-				label: 'Format',
-				width: 12,
+				id: 'formatexcel',
+				label: 'Spreadsheet format expression',
+				width: 6,
 				default: '*',
 				useVariables: true,
+				isVisible: (opt) => {
+					return opt.formattype.startsWith('excel')
+				},
+			},
+			{
+				type: 'textinput',
+				id: 'formatprintf',
+				label: 'printf format expression',
+				width: 6,
+				default: '%s',
+				useVariables: true,
+				isVisible: (opt) => {
+					return opt.formattype === 'printf'
+				},
+			},
+			{
+				type: 'textinput',
+				id: 'formatregex',
+				label: 'Regular replacement expression',
+				width: 6,
+				default: '/(.)/$1/g',
+				useVariables: true,
+				isVisible: (opt) => {
+					return opt.formattype === 'regex'
+				},
 			},
 			{
 				type: 'number',
@@ -354,37 +408,101 @@ class DataEntryInstance extends InstanceBase {
 	}
 
 	/**
+	 * gets the locale(s) from a string like "some text{locale1}{locale2}" and sets the internal variables to them
+	 * @param {*} str
+	 */
+	getlocale(str) {
+		let from = 'en-US'
+		let to = 'en-US'
+		let locale = str.match(
+			/(\{(zh(?:-\w\w)?|cs(?:-\w\w)?|da(?:-\w\w)?|nl(?:-\w\w)?|en(?:-\w\w)?|fi(?:-\w\w)?|fr(?:-\w\w)?|de(?:-\w\w)?|el(?:-\w\w)?|hu(?:-\w\w)?|is(?:-\w\w)?|id(?:-\w\w)?|it(?:-\w\w)?|ja(?:-\w\w)?|ko(?:-\w\w)?|nb(?:-\w\w)?|pl(?:-\w\w)?|pt(?:-\w\w)?|ru(?:-\w\w)?|sk(?:-\w\w)?|es(?:-\w\w)?|sv(?:-\w\w)?|th(?:-\w\w)?|tr(?:-\w\w)?)\}){1,2}$/i
+		)
+		if (locale === null) {
+			return {
+				apendix: '',
+				from,
+				to,
+			}
+		} else {
+			let locstr = locale[0]
+			locstr = locstr.replaceAll('}{', '|')
+			locstr = locstr.replaceAll(/[\{\}]/g, '')
+			let locales = locstr.split('|')
+
+			if (locales.length === 1) {
+				from = locales[0]
+				to = locales[0]
+			} else if (locales.length === 2) {
+				from = locales[0]
+				to = locales[1]
+			}
+		}
+		return {
+			apendix: locale[0],
+			from,
+			to,
+		}
+	}
+
+	/**
 	 * Farmats a string according to preference in configuration and returns the formatted result
 	 * @param {string} string the string to format
 	 * @returns {string} the formatted string, if format is invalid it returns the original string
 	 */
 	async formatData(string) {
-		let formatstr = await this.parseVariablesInString(this.config.format)
-		let formatted = ''
-		let formatregex = formatstr.match(/^\/(.+)(?<!\\)\/(.*)\/([gmiyusvd]?)$/)
-		if (Array.isArray(formatregex)) {
-			try {
-				formatted = string.replace(new RegExp(formatregex[1], formatregex[3]), formatregex[2].replaceAll('\\/', '/'))
-			} catch (error) {
-				formatted = string
-				this.log('error', `Regex formatting failed: ${error.message}`)
+		const getExcelParts = async () => {
+			const formatstr = await this.parseVariablesInString(this.config.formatexcel)
+			const loc = this.getlocale(formatstr)
+			return {
+				format: loc.apendix.length ? formatstr.slice(0, -1 * loc.apendix.length) : formatstr,
+				from: { locale: loc.from },
+				to: { locale: loc.to },
 			}
-		} else if (formatstr.match(/%./)) {
+		}
+
+		let formatted = ''
+		if (this.config.formattype === 'none') {
+			formatted = string
+		} else if (this.config.formattype === 'excelstring') {
+			const fmt = await getExcelParts()
+			formatted = numfmt.format(fmt.format, string, fmt.to)
+		} else if (this.config.formattype === 'excelnumber') {
+			const fmt = await getExcelParts()
+			let value = numfmt.parseNumber(string, fmt.from) ?? { v: '' }
+			formatted = numfmt.format(fmt.format, value.v, fmt.to)
+		} else if (this.config.formattype === 'exceldate') {
+			const fmt = await getExcelParts()
+			let value = numfmt.parseDate(string, fmt.from) ?? { v: '' }
+			formatted = numfmt.format(fmt.format, value.v, fmt.to)
+		} else if (this.config.formattype === 'exceltime') {
+			const fmt = await getExcelParts()
+			let value = numfmt.parseTime(string, fmt.from) ?? { v: '' }
+			formatted = numfmt.format(fmt.format, value.v, fmt.to)
+		} else if (this.config.formattype === 'excelbool') {
+			const fmt = await getExcelParts()
+			let value = numfmt.parseBool(string, fmt.from) ?? { v: false }
+			formatted = numfmt.format(fmt.format, value.v, fmt.to)
+		} else if (this.config.formattype === 'excelauto') {
+			const fmt = await getExcelParts()
+			let value = numfmt.parseValue(string, fmt.from) ?? { v: '' }
+			formatted = numfmt.format(fmt.format, value.v, fmt.to)
+		} else if (this.config.formattype === 'printf') {
+			let formatstr = await this.parseVariablesInString(this.config.formatprintf)
 			formatted = format(formatstr, string)
-		} else if (formatstr === 'shellArg') {
-			formatted = escape.shellArg(string)
-		} else if (formatstr === 'regExp') {
-			formatted = escape.regExp(string)
-		} else if (format === 'regExpReplacement') {
-			formatted = escape.regExpReplacement(string)
-		} else if (formatstr === 'html') {
-			formatted = escape.html(string)
-		} else if (formatstr === 'htmlAttr') {
-			formatted = escape.htmlAttr(string)
-		} else if (formatstr === 'htmlSpecialChars') {
-			formatted = escape.htmlSpecialChars(string)
-		} else if (formatstr === 'control') {
-			formatted = escape.control(string)
+		} else if (this.config.formattype === 'regex') {
+			let formatstr = await this.parseVariablesInString(this.config.formatregex)
+			let formatregex = formatstr.match(/^\/(.+)(?<!\\)\/(.*)\/([gmiyusvd]?)$/)
+			if (Array.isArray(formatregex)) {
+				try {
+					formatted = string.replace(new RegExp(formatregex[1], formatregex[3]), formatregex[2].replaceAll('\\/', '/'))
+				} catch (error) {
+					formatted = string
+					this.log('error', `Regex formatting failed: ${error.message}`)
+				}
+			} else {
+				formatted = string
+				this.log('error', `Regex formatting failed: input is no valid regular expression`)
+			}
 		} else {
 			formatted = string
 		}
