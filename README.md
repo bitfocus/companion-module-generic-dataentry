@@ -9,9 +9,10 @@ For mor information see [HELP.md](./companion/HELP.md) and [LICENSE](./LICENSE)
 
 ## Version History
 
-### 1.0.0
+### 1.0.0 (2023-11-04)
 - major: initial version
 - feat: actions to insert, modifiy, delete and enter data
 - feat: actions to move cursor and change configuration
+- feat: complex data formatting possibilities
 - feat: variables for the raw and formatted data
 - feat: feedbacks for modifiers and validity

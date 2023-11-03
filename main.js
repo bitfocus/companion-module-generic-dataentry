@@ -100,6 +100,12 @@ class DataEntryInstance extends InstanceBase {
 	getConfigFields() {
 		return [
 			{
+				id: 'hint',
+				type: 'static-text',
+				label: 'This is a complex module, please read the help page for an explanation of all options.',
+				width: 12,
+			},
+			{
 				id: 'autolengthraw',
 				label: 'Automatic enter when raw length is reached',
 				type: 'checkbox',
