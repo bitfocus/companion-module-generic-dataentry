@@ -217,13 +217,13 @@ class DataEntryInstance extends InstanceBase {
 				width: 6,
 				choices: [
 					{ id: 'none', label: 'None' },
-					{ id: 'excelauto', label: 'Spreadsheet automatic' },
-					{ id: 'excelstring', label: 'Spreadsheet text' },
-					{ id: 'excelnumber', label: 'Spreadsheet number' },
-					{ id: 'exceldate', label: 'Spreadsheet date' },
-					{ id: 'exceltime', label: 'Spreadsheet time' },
-					{ id: 'excelbool', label: 'Spreadsheet boolean' },
-					{ id: 'printf', label: 'Printf like' },
+					{ id: 'ecmaauto', label: 'ECMA-376 automatic' },
+					{ id: 'ecmastring', label: 'ECMA-376 text' },
+					{ id: 'ecmanumber', label: 'ECMA-376 number' },
+					{ id: 'ecmadate', label: 'ECMA-376 date' },
+					{ id: 'ecmatime', label: 'ECMA-376 time' },
+					{ id: 'ecmabool', label: 'ECMA-376 boolean' },
+					{ id: 'printf', label: 'Printf format' },
 					{ id: 'regex', label: 'Regular Expression' },
 				],
 				default: 'none',
@@ -240,13 +240,13 @@ class DataEntryInstance extends InstanceBase {
 			},
 			{
 				type: 'textinput',
-				id: 'formatexcel',
-				label: 'Spreadsheet format expression',
+				id: 'formatecma',
+				label: 'ECMA-376 format expression',
 				width: 6,
 				default: '*',
 				useVariables: true,
 				isVisible: (opt) => {
-					return opt.formattype.startsWith('excel')
+					return opt.formattype.startsWith('ecma')
 				},
 			},
 			{
@@ -450,8 +450,8 @@ class DataEntryInstance extends InstanceBase {
 	 * @returns {string} the formatted string, if format is invalid it returns the original string
 	 */
 	async formatData(string) {
-		const getExcelParts = async () => {
-			const formatstr = await this.parseVariablesInString(this.config.formatexcel)
+		const getEcmaParts = async () => {
+			const formatstr = await this.parseVariablesInString(this.config.formatecma)
 			const loc = this.getlocale(formatstr)
 			return {
 				format: loc.apendix.length ? formatstr.slice(0, -1 * loc.apendix.length) : formatstr,
@@ -463,27 +463,27 @@ class DataEntryInstance extends InstanceBase {
 		let formatted = ''
 		if (this.config.formattype === 'none') {
 			formatted = string
-		} else if (this.config.formattype === 'excelstring') {
-			const fmt = await getExcelParts()
+		} else if (this.config.formattype === 'ecmastring') {
+			const fmt = await getEcmaParts()
 			formatted = numfmt.format(fmt.format, string, fmt.to)
-		} else if (this.config.formattype === 'excelnumber') {
-			const fmt = await getExcelParts()
+		} else if (this.config.formattype === 'ecmanumber') {
+			const fmt = await getEcmaParts()
 			let value = numfmt.parseNumber(string, fmt.from) ?? { v: '' }
 			formatted = numfmt.format(fmt.format, value.v, fmt.to)
-		} else if (this.config.formattype === 'exceldate') {
-			const fmt = await getExcelParts()
+		} else if (this.config.formattype === 'ecmadate') {
+			const fmt = await getEcmaParts()
 			let value = numfmt.parseDate(string, fmt.from) ?? { v: '' }
 			formatted = numfmt.format(fmt.format, value.v, fmt.to)
-		} else if (this.config.formattype === 'exceltime') {
-			const fmt = await getExcelParts()
+		} else if (this.config.formattype === 'ecmatime') {
+			const fmt = await getEcmaParts()
 			let value = numfmt.parseTime(string, fmt.from) ?? { v: '' }
 			formatted = numfmt.format(fmt.format, value.v, fmt.to)
-		} else if (this.config.formattype === 'excelbool') {
-			const fmt = await getExcelParts()
+		} else if (this.config.formattype === 'ecmabool') {
+			const fmt = await getEcmaParts()
 			let value = numfmt.parseBool(string, fmt.from) ?? { v: false }
 			formatted = numfmt.format(fmt.format, value.v, fmt.to)
-		} else if (this.config.formattype === 'excelauto') {
-			const fmt = await getExcelParts()
+		} else if (this.config.formattype === 'ecmaauto') {
+			const fmt = await getEcmaParts()
 			let value = numfmt.parseValue(string, fmt.from) ?? { v: '' }
 			formatted = numfmt.format(fmt.format, value.v, fmt.to)
 		} else if (this.config.formattype === 'printf') {

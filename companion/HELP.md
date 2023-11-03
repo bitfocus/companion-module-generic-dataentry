@@ -28,10 +28,12 @@ Much of the general behavior is configured here. Parts of the configuration can 
 	There are a few different possibilities how formatting can be done:
 	- None  
     Easy, there will be no formatting which gives the best performance obviously by just using the same result for farmatted as raw.
-	- Spreadsheet Types  
-    When you type data in a cell of your favourite spreadsheet application, it will try to format it for you. There are two parts of it, first it will try to detect what kind of data you are entering and then it will format it to your liking.  
-		You can do both with this module as well. If you choose 'automatic' it will try to automatically detect the type of the entered data as text, a number, a date or a time. If you don't want to have this guesswork, you can also deliberately choose one of the data types. Second you can set up how the data should be presented, exactly the way like you are used from spreadsheet apps. E.g. 0000.00 will always show a number with at least four digits and rounded to two decimals. [Here](https://support.microsoft.com/en-us/office/review-guidelines-for-customizing-a-number-format-c0a1d1fa-d3f4-4018-96b7-9c9354dd99f5) is the full documentation.  
-		This module also allows to mess with locales. If you add a locale string in curly brackets like 0.00{de-DE} the output will be 0,00 instead of 0.00 as the decimal separator in Germani is the comma. Locales so far only are working for the formatting, not for the interpreting. That means if you want to enter a date you have to do it in US notation like mm/dd/yy but the you can format it in your locale. Supported locales are: cs, da, de, el, en, es, fi, fr, hu, is, id, it, ja, ko, nb, nl, pl, pt, ru, sk, sv, th, tr, zh.
+	- ECMA-376  
+    When you type data in a cell of your favorite spreadsheet application, it will try to format it for you. There are two parts to it, first it will try to detect what kind of data you are entering and then it will format it to your liking. Usually you can adjust the formatting with a magical syntax and that syntax is standardised in ECMA-376.  
+		You can use it with this module as well. If you choose 'automatic' it will try to automatically detect the type of the entered data as text, a number, a date or a time. If you don't want to have this guesswork, you can also deliberately choose one of the data types. Second you can set up how the data should be presented, exactly the way like you are used from spreadsheet apps. E.g. 0000.00 will always show a number with at least four digits and rounded to two decimals. [Here](https://support.microsoft.com/en-us/office/review-guidelines-for-customizing-a-number-format-c0a1d1fa-d3f4-4018-96b7-9c9354dd99f5) is the full documentation.  
+		This module also allows to mess with locales. If you add a locale string in curly brackets like 0.00{de-DE} the output will be 0,00 instead of 0.00 as the decimal separator in Germany is the comma. Locales so far only are working for the formatting, not for the interpreting. That means if you want to enter a date you have to do it in US notation like mm/dd/yy but the you can format it in your locale. Supported locales are: cs, da, de, el, en, es, fi, fr, hu, is, id, it, ja, ko, nb, nl, pl, pt, ru, sk, sv, th, tr, zh.
+
+
 
 	- printf notation  
     This is most useful for number formatting. It can be used to bring numbers in a wanted format like with a fixed precision or with padding or can convert numbers to a different radix. You have to give the format string in [printf notation](https://en.wikipedia.org/wiki/Printf) and the entry_raw will be used as the argument.  
@@ -105,6 +107,9 @@ Much of the general behavior is configured here. Parts of the configuration can 
   With this action you can delete Data from the entry_raw in both directions
 * Set Data  
   Discard all existing raw data and set it
+* Normalize Unicode
+  Unicode characters can be composed by several combining parts, most notably diacritics. Often there is also a character available which combines commonly used compositions in one character, like ñ or Ä or ø. You can enter such characters either by making a button which inserts the final character or you can make two buttons, one for the base character 'n' and one for the diacritics '~'. If you go the diacritics road, you can safe buttons and the result will look the same but technically you entered two characters. You will see this in the length of the entry and also when moving with the cursor.  
+	With the normalize unicode action all composed characters will be combined if a combined character exists. There is a preset category for all available diacritics and in those presets a normalize action is added. 
 * Set cursor position
 	This moves the cursor. If the insert position is outside of the data, the closest position will be chosen (start or end)
 * Enter Data  
@@ -119,8 +124,10 @@ Much of the general behavior is configured here. Parts of the configuration can 
   This action may be useful if you are using automatic enter by timeout and you want to cancel the currently running timer. Imagine you want to set the data from Companion so that there is a starting point. Later you want to be able to just complete the prefilled data with data insertion and you want to enter that by timer. Now you can either disable the timeout, set the data and then enable timeout again or you can set the data and cancel the now running timeout.
 * Set Enter criteria  
   change enter criteria on the fly, this will be stored in configuration
+	Beware that if you change the enter criteria and an automatic enter would have to take place according to the new criteria deriberately no enter is triggered.
 * Set format  
   change the formatting on the fly, this will be stored in configuration
+	If you are using automatic enter by lenght of the formatted value, beware that changing the format could result in a formatted value which now would reach your length, but this action deliberately does not trigger an automatic enter.
 
 ### Feedbacks
 
@@ -129,3 +136,15 @@ Much of the general behavior is configured here. Parts of the configuration can 
 * Valid  
   Shows if data in entry raw matches a regular expression  
 	This can be used to give feedback of validity or also to distribute data more advanced when used in trigger condition
+
+### Presets
+
+There are several Preset categories.
+- Numpad
+  All the numbers you need for building a simple numpad. No modifier support.
+- US Keyboard
+  All the characters present on a standard US keyboard with their standard Shift and Alt modifiers.
+- Control
+  Buttons for the most often used control actions like enter, setting modifiers, moving cursor
+- Diacritics
+  Diacritic characters for combinations with other characters. The buttons in these presets also add a normalize action.

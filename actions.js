@@ -476,8 +476,43 @@ module.exports = function (self) {
 			},
 		},
 
+		normalizeEntry: {
+			name: 'Normalize Unicode',
+			options: [],
+			callback: async () => {
+				let beforeCursor = self.entry_raw.slice(0, self.entry_cursor_position)
+				let afterCursor = self.entry_raw.slice(self.entry_cursor_position)
+				beforeCursor = beforeCursor.normalize()
+				afterCursor = afterCursor.normalize()
+				self.entry_cursor_position = beforeCursor.length
+				self.entry_raw = beforeCursor + afterCursor
+
+				// Truncate if necessary
+				if (self.entry_raw_length > self.config.maxlength) {
+					self.entry_raw = self.entry_raw.slice(0, self.config.maxlength)
+					self.entry_raw_length = self.config.maxlength
+				}
+				if (self.entry_cursor_position > self.config.maxlength) {
+					self.entry_cursor_position = self.config.maxlength
+				}
+
+				self.entry_raw_length = self.entry_raw.length
+
+				// Update variables
+				self.entry_formatted = await self.formatData(self.entry_raw)
+				self.entry_cursor = beforeCursor + self.config.cursor + afterCursor
+				self.setVariableValues({
+					entry_raw: self.entry_raw,
+					entry_raw_length: self.entry_raw_length,
+					entry_formatted: self.entry_formatted,
+					entry_cursor: self.entry_cursor,
+					entry_cursor_position: self.entry_cursor_position,
+				})
+			},
+		},
+
 		cursorPosition: {
-			name: 'Set cursor position',
+			name: 'Set Cursor Cosition',
 			options: [
 				{
 					id: 'operation',
@@ -651,7 +686,7 @@ module.exports = function (self) {
 		},
 
 		cancelTimeout: {
-			name: 'Cancel timeout',
+			name: 'Cancel Timeout',
 			options: [],
 			callback: () => {
 				self.cancelTimeout()
@@ -659,7 +694,7 @@ module.exports = function (self) {
 		},
 
 		setEnterCriteria: {
-			name: 'Set enter criteria',
+			name: 'Set Enter Criteria',
 			options: [
 				{
 					id: 'autolengthraw',
@@ -762,25 +797,25 @@ module.exports = function (self) {
 					label: 'Format Type',
 					choices: [
 						{ id: 'none', label: 'None' },
-						{ id: 'excelauto', label: 'Spreadsheet automatic' },
-						{ id: 'excelstring', label: 'Spreadsheet text' },
-						{ id: 'excelnumber', label: 'Spreadsheet number' },
-						{ id: 'exceldate', label: 'Spreadsheet date' },
-						{ id: 'exceltime', label: 'Spreadsheet time' },
-						{ id: 'excelbool', label: 'Spreadsheet boolean' },
-						{ id: 'printf', label: 'Printf like' },
+						{ id: 'ecmaauto', label: 'ECMA-376 automatic' },
+						{ id: 'ecmastring', label: 'ECMA-376 text' },
+						{ id: 'ecmanumber', label: 'ECMA-376 number' },
+						{ id: 'ecmadate', label: 'ECMA-376 date' },
+						{ id: 'ecmatime', label: 'ECMA-376 time' },
+						{ id: 'ecmabool', label: 'ECMA-376 boolean' },
+						{ id: 'printf', label: 'Printf format' },
 						{ id: 'regex', label: 'Regular Expression' },
 					],
 					default: self.config.formattype,
 				},
 				{
 					type: 'textinput',
-					id: 'formatexcel',
-					label: 'Spreadsheet format expression',
-					default: self.config.formatexcel,
+					id: 'formatecma',
+					label: 'ECMA-376 format expression',
+					default: self.config.formatecma,
 					useVariables: true,
 					isVisible: (opt) => {
-						return opt.formattype.startsWith('excel')
+						return opt.formattype.startsWith('ecma')
 					},
 				},
 				{
@@ -812,6 +847,12 @@ module.exports = function (self) {
 				self.config = newconfig
 				self.saveConfig(newconfig)
 				self.updateActions()
+
+				// Update variables
+				self.entry_formatted = await self.formatData(self.entry_raw)
+				self.setVariableValues({
+					entry_formatted: self.entry_formatted,
+				})
 			},
 		},
 	})
