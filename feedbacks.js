@@ -66,7 +66,7 @@ module.exports = async function (self) {
 					choices: [
 						{ id: 'raw', label: 'Raw data' },
 						{ id: 'formatted', label: 'Formatted Data' },
-						{ id: 'raw_last', label: 'Raw_last' },
+						{ id: 'raw_last', label: 'last Entry' },
 					],
 					default: 'raw',
 				},
@@ -89,7 +89,7 @@ module.exports = async function (self) {
 						break
 
 					case 'raw_last':
-						string = self.entry_raw_last
+						string = self.entry_last
 						break
 				}
 

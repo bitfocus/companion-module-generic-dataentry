@@ -382,7 +382,7 @@ class DataEntryInstance extends InstanceBase {
 	 * Handles all variables needed when data is entered
 	 * @param {'raw'|'formatted'|undefined} copy  if unset use the copy preference from configuration, if set copy this
 	 */
-	enter(copy) {
+	async enter(copy) {
 		this.cancelTimeout()
 		if (copy === undefined) copy = this.config.copydata
 		if (copy === 'raw') {
@@ -407,7 +407,7 @@ class DataEntryInstance extends InstanceBase {
 		})
 
 		if (copy !== 'none' && this.config.after === 'clear') {
-			this.clearRaw()
+			await this.clearRaw()
 		}
 
 		this.checkFeedbacks('valid')
@@ -518,17 +518,19 @@ class DataEntryInstance extends InstanceBase {
 	/**
 	 * Clears the data in entry_raw and updates variables
 	 */
-	clearRaw() {
+	async clearRaw() {
 		this.entry_raw = ''
 		this.entry_cursor = this.config.cursor
 		this.entry_cursor_position = 0
 		this.entry_raw_length = 0
+		this.entry_formatted = await this.formatData(this.entry_raw)
 
 		this.setVariableValues({
 			entry_raw: this.entry_raw,
 			entry_cursor: this.entry_cursor,
 			entry_cursor_position: this.entry_cursor_position,
 			entry_raw_length: this.entry_raw_length,
+			entry_formatted: this.entry_formatted,
 		})
 	}
 
