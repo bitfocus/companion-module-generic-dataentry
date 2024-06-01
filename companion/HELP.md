@@ -63,10 +63,10 @@ Much of the general behavior is configured here. Parts of the configuration can 
 		%[g_]f would insert a _ every three chars to mark thousands group.
 
   - Regular Expression Replacement  
-    If your format looks like "/some regex/some replacement/optional modifiers", it will apply this replacement.  
+    If your format looks like `/some regex/some replacement/optional modifiers`, it will apply this replacement.  
 		This is very powerful, but also may be hard to understand. Especially as normally regular expressions are not build to match partially entered strings. If you want to have good formatting with a regex replacement and at the same time want this while the string can also be incomplete, you have to master regex.  
 		Because the slash is used to denote the boundaries of the search and the replacement patterns, it has to be escaped if you want to use it in a pattern with a leading backslash.
-		More easy replacements can be done if you only want to replace characters or words. E.g. the pattern /./*/g will replace every character with a * like in a password entry field.  
+		More easy replacements can be done if you only want to replace characters or words. E.g. the pattern `/./*/g` will replace every character with a * like in a password entry field.  
 		`/(.)(..)$/$1\/$2/` This regex will insert a slash in front of the second last char
 
 * Maximum entry length before truncation  
