@@ -13,30 +13,30 @@ Much of the general behavior is configured here. Parts of the configuration can 
 * Automatic enter when raw length is reached  
   With this option enabled, you can collect data as long as you want and if the given amount of characters is met or superseeded then the data will be entered automatically. E.g. if you want to enter a 4-digit pin number, turn it on set length to 4
 * Automatic enter when formatted length is reached  
-  same as above but with the length of the formatted data. This can be different because formatting may e.g. add separators or remove spaces
+  Same as above but with the length of the formatted data. This can be different because formatting may e.g. add separators or remove spaces
 * Automatic enter when regular expression matches  
-  This is a more davanced concept. A [regular expression](https://en.wikipedia.org/wiki/Regular_expression) or "regex" is a special pattern describing a variety of possibilities how a string may look like. Checking for a length is also possible with regex, but less convenient. With regex you can check for a literal string, which means your data is entered automatically if you enter exactly that string. This could act like a password entry. Switch to the entry page and only if the correct data is entered, an automatic enter will happen and you can do the switch back to the last page. There are tons of possibilities as regex is very flexible. A complete guide to regex is way beyond this help page. Please look it up in the internet. This module uses the ECMA script flavour of regular expressions
+  This is a more advanced concept. A [regular expression](https://en.wikipedia.org/wiki/Regular_expression) or "regex" is a special pattern describing a variety of possibilities how a string may look like. Checking for a length is also possible with regex, but less convenient. With regex you can check for a literal string, which means your data is entered automatically if you enter exactly that string. This could act like a password entry. Switch to the entry page and only if the correct data is entered, an automatic enter will happen and you can do the switch back to the last page. There are tons of possibilities as regex is very flexible. A complete guide to regex is way beyond this help page. Please look it up in the internet. This module uses the ECMA script flavour of regular expressions
 * Automatic enter after inactivity timeout  
   If you activate this option, every time you make a change to the data a timer will be triggered and once the timer runs out, the data is entered automatically. This may be useful if you don't have much space on your buttons and don't want an enter button. Just type your data and wait a little time for them tho being entered automatically.
 * Enter Criteria  
-  Specify if you want the automatic enter occur if any of the above criteria is met or all of them.  
+  Specify if you want the automatic enter to occur if any of the above criteria is met or all of them.  
 	A useful combination could be length, time and all of them. So the timer doesn't fire until the minimum length is met.
 * When entering... and After entering...  
   Define what to do with the data when enter occurs. You'll get it.
-* Format Type
+* Format Type  
   This can be used to specify how the formatted output should be formatted.  
 	There are a few different possibilities how formatting can be done:
 	- None  
     Easy, there will be no formatting which gives the best performance obviously by just using the same result for formatted as raw.
 	- ECMA-376  
     When you type data in a cell of your favorite spreadsheet application, it will try to format it for you. There are two parts to it, first it will try to detect what kind of data you are entering and then it will format it to your liking. Usually you can adjust the formatting with a magical syntax and that syntax is standardised in ECMA-376.  
-		You can use it with this module as well. If you choose 'automatic' it will try to automatically detect the type of the entered data as text, a number, a date or a time. If you don't want to have this guesswork, you can also deliberately choose one of the data types. Second you can set up how the data should be presented, exactly the way like you are used from spreadsheet apps. E.g. 0000.00 will always show a number with at least four digits and rounded to two decimals. [Here](https://support.microsoft.com/en-us/office/review-guidelines-for-customizing-a-number-format-c0a1d1fa-d3f4-4018-96b7-9c9354dd99f5) is the full documentation.  
-		This module also allows to mess with locales. If you add a locale string in curly brackets like 0.00{de} the output will be 0,00 instead of 0.00 as the decimal separator in Germany is the comma. Locales so far only are working for the formatting, not for the interpreting. That means if you want to enter a date you have to do it in US notation like mm/dd/yy but then you can format it in your locale. Supported locales are: cs, da, de, el, en, es, fi, fr, hu, is, id, it, ja, ko, nb, nl, pl, pt, ru, sk, sv, th, tr, zh.
+		You can use it with this module as well. If you choose 'automatic' it will try to automatically detect the type of the entered data as text, a number, a date or a time. If you don't want to have this guesswork, you can also deliberately choose one of the data types. Second you can set up how the data should be presented, exactly the way you are used to from spreadsheet apps. E.g. 0000.00 will always show a number with at least four digits and rounded to two decimals. [Here](https://support.microsoft.com/en-us/office/review-guidelines-for-customizing-a-number-format-c0a1d1fa-d3f4-4018-96b7-9c9354dd99f5) is the full documentation.  
+		This module also allows you to mess with locales. If you add a locale string in curly brackets like 0.00{de} the output will be 0,00 instead of 0.00 as the decimal separator in Germany is the comma. Locales so far only are working for the formatting, not for the interpreting. That means if you want to enter a date you have to do it in US notation like mm/dd/yy but then you can format it in your locale. Supported locales are: cs, da, de, el, en, es, fi, fr, hu, is, id, it, ja, ko, nb, nl, pl, pt, ru, sk, sv, th, tr, zh.
 
 
 
 	- printf notation  
-    This is most useful for number formatting. It can be used to bring numbers in a wanted format like with a fixed precision or with padding or can convert numbers to a different radix. You have to give the format string in [printf notation](https://en.wikipedia.org/wiki/Printf) and the entry_raw will be used as the argument.  
+    This is most useful for number formatting. It can be used to bring numbers in a wanted format such as with a fixed precision or with padding or can convert numbers to a different radix. You have to give the format string in [printf notation](https://en.wikipedia.org/wiki/Printf) and the entry_raw will be used as the argument.  
 		The following list shows the most common keywords:
       - %f to (float) number
       - %k to number with metric system prefixes (like k, M, G, and so on...)
@@ -63,11 +63,11 @@ Much of the general behavior is configured here. Parts of the configuration can 
 		%[g_]f would insert a _ every three chars to mark thousands group.
 
   - Regular Expression Replacement  
-    If your format looks like "/some regex/some replacement/optional modifiers", it will apply this replacement.  
+    If your format looks like `/some regex/some replacement/optional modifiers`, it will apply this replacement.  
 		This is very powerful, but also may be hard to understand. Especially as normally regular expressions are not build to match partially entered strings. If you want to have good formatting with a regex replacement and at the same time want this while the string can also be incomplete, you have to master regex.  
 		Because the slash is used to denote the boundaries of the search and the replacement patterns, it has to be escaped if you want to use it in a pattern with a leading backslash.
-		More easy replacements can be done if you only want to replace characters or words. E.g. the pattern /./*/g will replace every character with a * like in a password entry field.  
-		/(.)(..)$/$1\/$2/ This regex will insert a slash in front of the second last char
+		More easy replacements can be done if you only want to replace characters or words. E.g. the pattern `/./*/g` will replace every character with a * like in a password entry field.  
+		`/(.)(..)$/$1\/$2/` This regex will insert a slash in front of the second last char
 
 * Maximum entry length before truncation  
   Data can become quite large, sometimes you want to limit the length of data one can enter. Here's the place to do this.
@@ -140,11 +140,11 @@ Much of the general behavior is configured here. Parts of the configuration can 
 ### Presets
 
 There are several Preset categories.
-- Numpad
+- Numpad  
   All the numbers you need for building a simple numpad. No modifier support.
-- US Keyboard
+- US Keyboard  
   All the characters present on a standard US keyboard with their standard Shift and Alt modifiers.
-- Control
+- Control  
   Buttons for the most often used control actions like enter, setting modifiers, moving cursor
-- Diacritics
+- Diacritics  
   Diacritic characters for combinations with other characters. The buttons in these presets also add a normalize action.

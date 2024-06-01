@@ -5,7 +5,7 @@ Data can be entered like on a keyboard or numpad and is collected until you ente
 Enter can also happen on predefined criteria.
 Data can be edited, validated and formatted.
 
-For mor information see [HELP.md](./companion/HELP.md) and [LICENSE](./LICENSE)
+For more information see [HELP.md](./companion/HELP.md) and [LICENSE](./LICENSE)
 
 ## Version History
 
