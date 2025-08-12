@@ -90,7 +90,7 @@ class DataEntryInstance extends InstanceBase {
 						...obj,
 						[vari.variableId]: vari.initial,
 					}
-				}, initObj)
+				}, initObj),
 		)
 	}
 
@@ -252,7 +252,7 @@ class DataEntryInstance extends InstanceBase {
 				default: '*',
 				useVariables: true,
 				isVisible: (opt) => {
-					return opt.formattype.startsWith('ecma')
+					return !!opt && typeof opt.formattype === 'string' && opt.formattype.startsWith('ecma')
 				},
 			},
 			{
@@ -421,7 +421,7 @@ class DataEntryInstance extends InstanceBase {
 		let from = 'en-US'
 		let to = 'en-US'
 		let locale = str.match(
-			/(\{(zh(?:-\w\w)?|cs(?:-\w\w)?|da(?:-\w\w)?|nl(?:-\w\w)?|en(?:-\w\w)?|fi(?:-\w\w)?|fr(?:-\w\w)?|de(?:-\w\w)?|el(?:-\w\w)?|hu(?:-\w\w)?|is(?:-\w\w)?|id(?:-\w\w)?|it(?:-\w\w)?|ja(?:-\w\w)?|ko(?:-\w\w)?|nb(?:-\w\w)?|pl(?:-\w\w)?|pt(?:-\w\w)?|ru(?:-\w\w)?|sk(?:-\w\w)?|es(?:-\w\w)?|sv(?:-\w\w)?|th(?:-\w\w)?|tr(?:-\w\w)?)\}){1,2}$/i
+			/(\{(zh(?:-\w\w)?|cs(?:-\w\w)?|da(?:-\w\w)?|nl(?:-\w\w)?|en(?:-\w\w)?|fi(?:-\w\w)?|fr(?:-\w\w)?|de(?:-\w\w)?|el(?:-\w\w)?|hu(?:-\w\w)?|is(?:-\w\w)?|id(?:-\w\w)?|it(?:-\w\w)?|ja(?:-\w\w)?|ko(?:-\w\w)?|nb(?:-\w\w)?|pl(?:-\w\w)?|pt(?:-\w\w)?|ru(?:-\w\w)?|sk(?:-\w\w)?|es(?:-\w\w)?|sv(?:-\w\w)?|th(?:-\w\w)?|tr(?:-\w\w)?)\}){1,2}$/i,
 		)
 		if (locale === null) {
 			return {
