@@ -1,4 +1,4 @@
-const { splice } = require('./upgrades')
+const { splice } = require('./upgrades');
 
 module.exports = function (self) {
 	self.setActionDefinitions({
@@ -66,81 +66,81 @@ module.exports = function (self) {
 			],
 			callback: async ({ options }) => {
 				// Calculate insertion position
-				let posstring = await self.parseVariablesInString(options.position)
-				let pos = parseInt(posstring)
+				let posstring = await self.parseVariablesInString(options.position);
+				let pos = parseInt(posstring);
 				if (isNaN(pos)) {
-					pos = self.entry_cursor_position
+					pos = self.entry_cursor_position;
 				} else {
-					if (pos > 0) pos = Math.min(pos, self.entry_raw_length)
-					else if (pos < 0) pos = Math.max(self.entry_raw_length - pos, 0)
+					if (pos > 0) pos = Math.min(pos, self.entry_raw_length);
+					else if (pos < 0) pos = Math.max(self.entry_raw_length - pos, 0);
 					else {
-						if (posstring.charAt(0) === '-') pos = self.entry_raw_length
-						else pos = 0
+						if (posstring.charAt(0) === '-') pos = self.entry_raw_length;
+						else pos = 0;
 					}
 				}
 
 				// Find data to insert
-				let data = ''
+				let data = '';
 				if (self.modifier[1].effective && self.modifier[2].effective) {
-					if (options.data3type) data = await self.parseVariablesInString(options.data3)
-					else data = await self.parseVariablesInString(options.data0)
+					if (options.data3type) data = await self.parseVariablesInString(options.data3);
+					else data = await self.parseVariablesInString(options.data0);
 				} else if (!self.modifier[1].effective && self.modifier[2].effective) {
-					if (options.data2type) data = await self.parseVariablesInString(options.data2)
-					else data = await self.parseVariablesInString(options.data0)
+					if (options.data2type) data = await self.parseVariablesInString(options.data2);
+					else data = await self.parseVariablesInString(options.data0);
 				} else if (self.modifier[1].effective && !self.modifier[2].effective) {
-					if (options.data1type) data = await self.parseVariablesInString(options.data1)
-					else data = await self.parseVariablesInString(options.data0)
+					if (options.data1type) data = await self.parseVariablesInString(options.data1);
+					else data = await self.parseVariablesInString(options.data0);
 				} else {
-					data = await self.parseVariablesInString(options.data0)
+					data = await self.parseVariablesInString(options.data0);
 				}
 
 				// Do insertion
-				self.entry_raw = self.entry_raw.slice(0, pos) + data + self.entry_raw.slice(pos)
-				self.entry_cursor_position = pos + data.length
+				self.entry_raw = self.entry_raw.slice(0, pos) + data + self.entry_raw.slice(pos);
+				self.entry_cursor_position = pos + data.length;
 
-				self.entry_raw_length = self.entry_raw.length
+				self.entry_raw_length = self.entry_raw.length;
 
 				// Truncate if necessary
 				if (self.entry_raw_length > self.config.maxlength) {
-					self.entry_raw = self.entry_raw.slice(0, self.config.maxlength)
-					self.entry_raw_length = self.config.maxlength
+					self.entry_raw = self.entry_raw.slice(0, self.config.maxlength);
+					self.entry_raw_length = self.config.maxlength;
 				}
 				if (self.entry_cursor_position > self.config.maxlength) {
-					self.entry_cursor_position = self.config.maxlength
+					self.entry_cursor_position = self.config.maxlength;
 				}
 
 				// Update variables
-				self.entry_formatted = await self.formatData(self.entry_raw)
+				self.entry_formatted = await self.formatData(self.entry_raw);
 				self.entry_cursor =
 					self.entry_raw.slice(0, self.entry_cursor_position) +
 					self.config.cursor +
-					self.entry_raw.slice(self.entry_cursor_position)
+					self.entry_raw.slice(self.entry_cursor_position);
 				self.setVariableValues({
 					entry_raw: self.entry_raw,
 					entry_raw_length: self.entry_raw_length,
 					entry_formatted: self.entry_formatted,
 					entry_cursor: self.entry_cursor,
 					entry_cursor_position: self.entry_cursor_position,
-				})
+				});
 
 				// Check enter criteria
-				self.checkEnter()
+				self.checkEnter();
 				if (self.config.autotime) {
-					self.restartTimeout()
+					self.restartTimeout();
 				}
 
 				// Check feedback 'valid'
-				self.checkFeedbacks('valid')
+				self.checkFeedbacks('valid');
 
 				// Release onetime modifiers
-				let didrelease = false
+				let didrelease = false;
 				for (const idx of [1, 2]) {
 					if (self.modifier[idx].onetime) {
-						self.releaseModifier(idx)
-						didrelease = true
+						self.releaseModifier(idx);
+						didrelease = true;
 					}
 				}
-				if (didrelease) self.checkFeedbacks('modifier')
+				if (didrelease) self.checkFeedbacks('modifier');
 			},
 		},
 
@@ -217,111 +217,111 @@ module.exports = function (self) {
 			],
 			callback: async ({ options }) => {
 				// Calculate start position
-				let startstring = await self.parseVariablesInString(options.startposition)
-				let start = parseInt(startstring)
+				let startstring = await self.parseVariablesInString(options.startposition);
+				let start = parseInt(startstring);
 				if (isNaN(start)) {
-					start = self.entry_cursor_position
+					start = self.entry_cursor_position;
 				} else {
-					if (start > 0) start = Math.min(start, self.entry_raw_length)
-					else if (start < 0) start = Math.max(self.entry_raw_length - start, 0)
+					if (start > 0) start = Math.min(start, self.entry_raw_length);
+					else if (start < 0) start = Math.max(self.entry_raw_length - start, 0);
 					else {
-						if (startstring.charAt(0) === '-') start = self.entry_raw_length
-						else start = 0
+						if (startstring.charAt(0) === '-') start = self.entry_raw_length;
+						else start = 0;
 					}
 				}
 
 				// Calculate end position
-				let endstring = await self.parseVariablesInString(options.position)
-				let end
+				let endstring = await self.parseVariablesInString(options.position);
+				let end;
 				if (endstring === '') {
-					end = null
+					end = null;
 				} else {
-					end = parseInt(endstring)
+					end = parseInt(endstring);
 					if (isNaN(end)) {
-						end = self.entry_cursor_position
+						end = self.entry_cursor_position;
 					} else {
-						if (end > 0) end = Math.min(end, self.entry_raw_length)
-						else if (end < 0) end = Math.max(self.entry_raw_length - end, 0)
+						if (end > 0) end = Math.min(end, self.entry_raw_length);
+						else if (end < 0) end = Math.max(self.entry_raw_length - end, 0);
 						else {
-							if (endstring.charAt(0) === '-') end = self.entry_raw_length
-							else end = 0
+							if (endstring.charAt(0) === '-') end = self.entry_raw_length;
+							else end = 0;
 						}
 					}
 				}
 
 				// Find data to overwrite
-				let data = ''
+				let data = '';
 				if (self.modifier[1].effective && self.modifier[2].effective) {
-					if (options.data3type) data = await self.parseVariablesInString(options.data3)
-					else data = await self.parseVariablesInString(options.data0)
+					if (options.data3type) data = await self.parseVariablesInString(options.data3);
+					else data = await self.parseVariablesInString(options.data0);
 				} else if (!self.modifier[1].effective && self.modifier[2].effective) {
-					if (options.data2type) data = await self.parseVariablesInString(options.data2)
-					else data = await self.parseVariablesInString(options.data0)
+					if (options.data2type) data = await self.parseVariablesInString(options.data2);
+					else data = await self.parseVariablesInString(options.data0);
 				} else if (self.modifier[1].effective && !self.modifier[2].effective) {
-					if (options.data1type) data = await self.parseVariablesInString(options.data1)
-					else data = await self.parseVariablesInString(options.data0)
+					if (options.data1type) data = await self.parseVariablesInString(options.data1);
+					else data = await self.parseVariablesInString(options.data0);
 				} else {
-					data = await self.parseVariablesInString(options.data0)
+					data = await self.parseVariablesInString(options.data0);
 				}
 
 				if (end !== null) {
-					let overwritelength = end - start
+					let overwritelength = end - start;
 					if (overwritelength < data.length) {
-						data = data.slice(0, overwritelength)
+						data = data.slice(0, overwritelength);
 					}
 				}
 
 				// Do overwrite
 				if (start + data.length > self.entry_raw_length) {
-					self.entry_raw = self.entry_raw.slice(0, start) + data
+					self.entry_raw = self.entry_raw.slice(0, start) + data;
 				} else {
-					self.entry_raw = self.entry_raw.slice(0, start) + data + self.entry_raw.slice(start + data.length)
+					self.entry_raw = self.entry_raw.slice(0, start) + data + self.entry_raw.slice(start + data.length);
 				}
 
-				self.entry_cursor_position = start + data.length
-				self.entry_raw_length = self.entry_raw.length
+				self.entry_cursor_position = start + data.length;
+				self.entry_raw_length = self.entry_raw.length;
 
 				// Truncate if necessary
 				if (self.entry_raw_length > self.config.maxlength) {
-					self.entry_raw = self.entry_raw.slice(0, self.config.maxlength)
-					self.entry_raw_length = self.config.maxlength
+					self.entry_raw = self.entry_raw.slice(0, self.config.maxlength);
+					self.entry_raw_length = self.config.maxlength;
 				}
 				if (self.entry_cursor_position > self.config.maxlength) {
-					self.entry_cursor_position = self.config.maxlength
+					self.entry_cursor_position = self.config.maxlength;
 				}
 
 				// Update variables
-				self.entry_formatted = await self.formatData(self.entry_raw)
+				self.entry_formatted = await self.formatData(self.entry_raw);
 				self.entry_cursor =
 					self.entry_raw.slice(0, self.entry_cursor_position) +
 					self.config.cursor +
-					self.entry_raw.slice(self.entry_cursor_position)
+					self.entry_raw.slice(self.entry_cursor_position);
 				self.setVariableValues({
 					entry_raw: self.entry_raw,
 					entry_raw_length: self.entry_raw_length,
 					entry_formatted: self.entry_formatted,
 					entry_cursor: self.entry_cursor,
 					entry_cursor_position: self.entry_cursor_position,
-				})
+				});
 
 				// Check enter criteria
-				self.checkEnter()
+				self.checkEnter();
 				if (self.config.autotime) {
-					self.restartTimeout()
+					self.restartTimeout();
 				}
 
 				// Check feedback 'valid'
-				self.checkFeedbacks('valid')
+				self.checkFeedbacks('valid');
 
 				// Release onetime modifiers
-				let didrelease = false
+				let didrelease = false;
 				for (const idx of [1, 2]) {
 					if (self.modifier[idx].onetime) {
-						self.releaseModifier(idx)
-						didrelease = true
+						self.releaseModifier(idx);
+						didrelease = true;
 					}
 				}
-				if (didrelease) self.checkFeedbacks('modifier')
+				if (didrelease) self.checkFeedbacks('modifier');
 			},
 		},
 
@@ -350,64 +350,64 @@ module.exports = function (self) {
 			],
 			callback: async ({ options }) => {
 				// Calculate position
-				let posstring = await self.parseVariablesInString(options.position)
-				let pos = parseInt(posstring)
+				let posstring = await self.parseVariablesInString(options.position);
+				let pos = parseInt(posstring);
 				if (isNaN(pos)) {
-					pos = self.entry_cursor_position
+					pos = self.entry_cursor_position;
 				} else {
-					if (pos > 0) pos = Math.min(pos, self.entry_raw_length)
-					else if (pos < 0) pos = Math.max(self.entry_raw_length - pos, 0)
+					if (pos > 0) pos = Math.min(pos, self.entry_raw_length);
+					else if (pos < 0) pos = Math.max(self.entry_raw_length - pos, 0);
 					else {
-						if (posstring.charAt(0) === '-') pos = self.entry_raw_length
-						else pos = 0
+						if (posstring.charAt(0) === '-') pos = self.entry_raw_length;
+						else pos = 0;
 					}
 				}
 
 				// Do deletion
 				if (options.amount > 0) {
 					self.entry_raw =
-						self.entry_raw.slice(0, pos) + self.entry_raw.slice(Math.min(pos + options.amount, self.entry_raw_length))
-					self.entry_cursor_position = pos
+						self.entry_raw.slice(0, pos) + self.entry_raw.slice(Math.min(pos + options.amount, self.entry_raw_length));
+					self.entry_cursor_position = pos;
 				} else if (options.amount < 0) {
-					let leftleftover = Math.max(pos + options.amount, 0)
-					self.entry_raw = self.entry_raw.slice(0, leftleftover) + self.entry_raw.slice(pos)
-					self.entry_cursor_position = leftleftover
+					let leftleftover = Math.max(pos + options.amount, 0);
+					self.entry_raw = self.entry_raw.slice(0, leftleftover) + self.entry_raw.slice(pos);
+					self.entry_cursor_position = leftleftover;
 				}
 
-				self.entry_raw_length = self.entry_raw.length
+				self.entry_raw_length = self.entry_raw.length;
 
 				// Update variables
-				self.entry_formatted = await self.formatData(self.entry_raw)
+				self.entry_formatted = await self.formatData(self.entry_raw);
 				self.entry_cursor =
 					self.entry_raw.slice(0, self.entry_cursor_position) +
 					self.config.cursor +
-					self.entry_raw.slice(self.entry_cursor_position)
+					self.entry_raw.slice(self.entry_cursor_position);
 				self.setVariableValues({
 					entry_raw: self.entry_raw,
 					entry_raw_length: self.entry_raw_length,
 					entry_formatted: self.entry_formatted,
 					entry_cursor: self.entry_cursor,
 					entry_cursor_position: self.entry_cursor_position,
-				})
+				});
 
 				// Check enter criteria
-				self.checkEnter()
+				self.checkEnter();
 				if (self.config.autotime) {
-					self.restartTimeout()
+					self.restartTimeout();
 				}
 
 				// Check feedback 'valid'
-				self.checkFeedbacks('valid')
+				self.checkFeedbacks('valid');
 
 				// Release onetime modifiers
-				let didrelease = false
+				let didrelease = false;
 				for (const idx of [1, 2]) {
 					if (self.modifier[idx].onetime) {
-						self.releaseModifier(idx)
-						didrelease = true
+						self.releaseModifier(idx);
+						didrelease = true;
 					}
 				}
-				if (didrelease) self.checkFeedbacks('modifier')
+				if (didrelease) self.checkFeedbacks('modifier');
 			},
 		},
 
@@ -423,56 +423,56 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				let data = await self.parseVariablesInString(options.data)
+				let data = await self.parseVariablesInString(options.data);
 
 				// Do set
-				self.entry_raw = data
+				self.entry_raw = data;
 
-				self.entry_cursor_position = data.length
+				self.entry_cursor_position = data.length;
 
 				// Truncate if necessary
 				if (self.entry_raw_length > self.config.maxlength) {
-					self.entry_raw = self.entry_raw.slice(0, self.config.maxlength)
-					self.entry_raw_length = self.config.maxlength
+					self.entry_raw = self.entry_raw.slice(0, self.config.maxlength);
+					self.entry_raw_length = self.config.maxlength;
 				}
 				if (self.entry_cursor_position > self.config.maxlength) {
-					self.entry_cursor_position = self.config.maxlength
+					self.entry_cursor_position = self.config.maxlength;
 				}
 
-				self.entry_raw_length = self.entry_raw.length
+				self.entry_raw_length = self.entry_raw.length;
 
 				// Update variables
-				self.entry_formatted = await self.formatData(self.entry_raw)
+				self.entry_formatted = await self.formatData(self.entry_raw);
 				self.entry_cursor =
 					self.entry_raw.slice(0, self.entry_cursor_position) +
 					self.config.cursor +
-					self.entry_raw.slice(self.entry_cursor_position)
+					self.entry_raw.slice(self.entry_cursor_position);
 				self.setVariableValues({
 					entry_raw: self.entry_raw,
 					entry_raw_length: self.entry_raw_length,
 					entry_formatted: self.entry_formatted,
 					entry_cursor: self.entry_cursor,
 					entry_cursor_position: self.entry_cursor_position,
-				})
+				});
 
 				// Check enter criteria
-				self.checkEnter()
+				self.checkEnter();
 				if (self.config.autotime) {
-					self.restartTimeout()
+					self.restartTimeout();
 				}
 
 				// Check feedback 'valid'
-				self.checkFeedbacks('valid')
+				self.checkFeedbacks('valid');
 
 				// Release onetime modifiers
-				let didrelease = false
+				let didrelease = false;
 				for (const idx of [1, 2]) {
 					if (self.modifier[idx].onetime) {
-						self.releaseModifier(idx)
-						didrelease = true
+						self.releaseModifier(idx);
+						didrelease = true;
 					}
 				}
-				if (didrelease) self.checkFeedbacks('modifier')
+				if (didrelease) self.checkFeedbacks('modifier');
 			},
 		},
 
@@ -480,34 +480,34 @@ module.exports = function (self) {
 			name: 'Normalize Unicode',
 			options: [],
 			callback: async () => {
-				let beforeCursor = self.entry_raw.slice(0, self.entry_cursor_position)
-				let afterCursor = self.entry_raw.slice(self.entry_cursor_position)
-				beforeCursor = beforeCursor.normalize()
-				afterCursor = afterCursor.normalize()
-				self.entry_cursor_position = beforeCursor.length
-				self.entry_raw = beforeCursor + afterCursor
+				let beforeCursor = self.entry_raw.slice(0, self.entry_cursor_position);
+				let afterCursor = self.entry_raw.slice(self.entry_cursor_position);
+				beforeCursor = beforeCursor.normalize();
+				afterCursor = afterCursor.normalize();
+				self.entry_cursor_position = beforeCursor.length;
+				self.entry_raw = beforeCursor + afterCursor;
 
 				// Truncate if necessary
 				if (self.entry_raw_length > self.config.maxlength) {
-					self.entry_raw = self.entry_raw.slice(0, self.config.maxlength)
-					self.entry_raw_length = self.config.maxlength
+					self.entry_raw = self.entry_raw.slice(0, self.config.maxlength);
+					self.entry_raw_length = self.config.maxlength;
 				}
 				if (self.entry_cursor_position > self.config.maxlength) {
-					self.entry_cursor_position = self.config.maxlength
+					self.entry_cursor_position = self.config.maxlength;
 				}
 
-				self.entry_raw_length = self.entry_raw.length
+				self.entry_raw_length = self.entry_raw.length;
 
 				// Update variables
-				self.entry_formatted = await self.formatData(self.entry_raw)
-				self.entry_cursor = beforeCursor + self.config.cursor + afterCursor
+				self.entry_formatted = await self.formatData(self.entry_raw);
+				self.entry_cursor = beforeCursor + self.config.cursor + afterCursor;
 				self.setVariableValues({
 					entry_raw: self.entry_raw,
 					entry_raw_length: self.entry_raw_length,
 					entry_formatted: self.entry_formatted,
 					entry_cursor: self.entry_cursor,
 					entry_cursor_position: self.entry_cursor_position,
-				})
+				});
 			},
 		},
 
@@ -536,31 +536,31 @@ module.exports = function (self) {
 			],
 			callback: async ({ options }) => {
 				// Calculate position
-				let pos = self.entry_cursor_position
+				let pos = self.entry_cursor_position;
 				if (options.operation === 'abs') {
-					pos = options.amount
+					pos = options.amount;
 				} else if (options.operation === 'inc') {
-					pos += options.amount
+					pos += options.amount;
 				}
 
-				pos = Math.min(pos, self.entry_raw.length)
-				pos = Math.max(pos, 0)
+				pos = Math.min(pos, self.entry_raw.length);
+				pos = Math.max(pos, 0);
 
-				self.entry_cursor_position = pos
+				self.entry_cursor_position = pos;
 
 				if (self.config.autotime) {
-					self.restartTimeout()
+					self.restartTimeout();
 				}
 
 				// Update variables
 				self.entry_cursor =
 					self.entry_raw.slice(0, self.entry_cursor_position) +
 					self.config.cursor +
-					self.entry_raw.slice(self.entry_cursor_position)
+					self.entry_raw.slice(self.entry_cursor_position);
 				self.setVariableValues({
 					entry_cursor: self.entry_cursor,
 					entry_cursor_position: self.entry_cursor_position,
-				})
+				});
 			},
 		},
 
@@ -581,20 +581,20 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				self.cancelTimeout()
+				self.cancelTimeout();
 
-				if (options.copy === 'default') self.enter()
-				else self.enter(options.copy)
+				if (options.copy === 'default') self.enter();
+				else self.enter(options.copy);
 
 				// Release onetime modifiers
-				let didrelease = false
+				let didrelease = false;
 				for (const idx of [1, 2]) {
 					if (self.modifier[idx].onetime) {
-						self.releaseModifier(idx)
-						didrelease = true
+						self.releaseModifier(idx);
+						didrelease = true;
 					}
 				}
-				if (didrelease) self.checkFeedbacks('modifier')
+				if (didrelease) self.checkFeedbacks('modifier');
 			},
 		},
 
@@ -627,60 +627,60 @@ module.exports = function (self) {
 				},
 			],
 			callback: ({ options, controlId }) => {
-				const me = `${controlId}`
+				const me = `${controlId}`;
 				switch (options.action) {
-					case 'set':
-						self.modifier[options.modifier].controls.add(me)
-						self.modifier[options.modifier].effective = true
-						self.modifier[options.modifier].onetime = false
-						break
+				case 'set':
+					self.modifier[options.modifier].controls.add(me);
+					self.modifier[options.modifier].effective = true;
+					self.modifier[options.modifier].onetime = false;
+					break;
 
-					case 'release':
-						self.modifier[options.modifier].controls.delete(me)
-						self.modifier[options.modifier].effective = self.modifier[options.modifier].controls.size ? true : false
-						self.modifier[options.modifier].onetime = false
-						break
+				case 'release':
+					self.modifier[options.modifier].controls.delete(me);
+					self.modifier[options.modifier].effective = self.modifier[options.modifier].controls.size ? true : false;
+					self.modifier[options.modifier].onetime = false;
+					break;
 
-					case 'releaseall':
-						self.modifier[options.modifier].controls.clear()
-						self.modifier[options.modifier].effective = false
-						self.modifier[options.modifier].onetime = false
-						break
+				case 'releaseall':
+					self.modifier[options.modifier].controls.clear();
+					self.modifier[options.modifier].effective = false;
+					self.modifier[options.modifier].onetime = false;
+					break;
 
-					case 'toggle':
-						if (self.modifier[options.modifier].controls.has(me)) {
-							self.modifier[options.modifier].controls.delete(me)
-						} else {
-							self.modifier[options.modifier].controls.add(me)
-						}
-						self.modifier[options.modifier].effective = self.modifier[options.modifier].controls.size ? true : false
-						self.modifier[options.modifier].onetime = false
-						break
+				case 'toggle':
+					if (self.modifier[options.modifier].controls.has(me)) {
+						self.modifier[options.modifier].controls.delete(me);
+					} else {
+						self.modifier[options.modifier].controls.add(me);
+					}
+					self.modifier[options.modifier].effective = self.modifier[options.modifier].controls.size ? true : false;
+					self.modifier[options.modifier].onetime = false;
+					break;
 
-					case 'toggleall':
-						if (self.modifier[options.modifier].controls.size) {
-							self.modifier[options.modifier].controls.clear()
-							self.modifier[options.modifier].effective = false
-						} else {
-							self.modifier[options.modifier].controls.add(me)
-							self.modifier[options.modifier].effective = true
-						}
-						self.modifier[options.modifier].onetime = false
-						break
+				case 'toggleall':
+					if (self.modifier[options.modifier].controls.size) {
+						self.modifier[options.modifier].controls.clear();
+						self.modifier[options.modifier].effective = false;
+					} else {
+						self.modifier[options.modifier].controls.add(me);
+						self.modifier[options.modifier].effective = true;
+					}
+					self.modifier[options.modifier].onetime = false;
+					break;
 
-					case 'onetime':
-						if (self.modifier[options.modifier].controls.size) {
-							self.modifier[options.modifier].controls.clear()
-							self.modifier[options.modifier].effective = false
-							self.modifier[options.modifier].onetime = false
-						} else {
-							self.modifier[options.modifier].controls.add(me)
-							self.modifier[options.modifier].effective = true
-							self.modifier[options.modifier].onetime = true
-						}
-						break
+				case 'onetime':
+					if (self.modifier[options.modifier].controls.size) {
+						self.modifier[options.modifier].controls.clear();
+						self.modifier[options.modifier].effective = false;
+						self.modifier[options.modifier].onetime = false;
+					} else {
+						self.modifier[options.modifier].controls.add(me);
+						self.modifier[options.modifier].effective = true;
+						self.modifier[options.modifier].onetime = true;
+					}
+					break;
 				}
-				self.checkFeedbacks('modifier')
+				self.checkFeedbacks('modifier');
 				// self.log('debug', `Modifier ${options.modifier} has ${Array.from(self.modifier[options.modifier].controls)}`)
 			},
 		},
@@ -689,7 +689,7 @@ module.exports = function (self) {
 			name: 'Cancel Timeout',
 			options: [],
 			callback: () => {
-				self.cancelTimeout()
+				self.cancelTimeout();
 			},
 		},
 
@@ -711,7 +711,7 @@ module.exports = function (self) {
 					step: 1,
 					default: self.config.enterlengthraw || 4,
 					isVisible: (conf) => {
-						return conf.autolengthraw === true
+						return conf.autolengthraw === true;
 					},
 				},
 				{
@@ -729,7 +729,7 @@ module.exports = function (self) {
 					step: 1,
 					default: self.config.enterlengthformatted || 4,
 					isVisible: (conf) => {
-						return conf.autolengthformatted === true
+						return conf.autolengthformatted === true;
 					},
 				},
 				{
@@ -745,7 +745,7 @@ module.exports = function (self) {
 					default: self.config.enterregex || '/.*/i',
 					regex: '/^/(.+)\\/([gmiyusvd]?)$/',
 					isVisible: (conf) => {
-						return conf.autoregex === true
+						return conf.autoregex === true;
 					},
 				},
 				{
@@ -763,7 +763,7 @@ module.exports = function (self) {
 					step: 0.1,
 					default: self.config.timeout || 2.5,
 					isVisible: (conf) => {
-						return conf.autotime === true
+						return conf.autotime === true;
 					},
 				},
 				{
@@ -781,10 +781,10 @@ module.exports = function (self) {
 				const newconfig = {
 					...self.config,
 					...options,
-				}
-				self.config = newconfig
-				self.saveConfig(newconfig)
-				self.updateActions()
+				};
+				self.config = newconfig;
+				self.saveConfig(newconfig);
+				self.updateActions();
 			},
 		},
 
@@ -815,7 +815,7 @@ module.exports = function (self) {
 					default: self.config.formatecma,
 					useVariables: true,
 					isVisible: (opt) => {
-						return opt.formattype.startsWith('ecma')
+						return opt.formattype.startsWith('ecma');
 					},
 				},
 				{
@@ -825,7 +825,7 @@ module.exports = function (self) {
 					default: self.config.formatfrintf,
 					useVariables: true,
 					isVisible: (opt) => {
-						return opt.formattype === 'printf'
+						return opt.formattype === 'printf';
 					},
 				},
 				{
@@ -835,7 +835,7 @@ module.exports = function (self) {
 					default: self.config.formatregex,
 					useVariables: true,
 					isVisible: (opt) => {
-						return opt.formattype === 'regex'
+						return opt.formattype === 'regex';
 					},
 				},
 			],
@@ -843,17 +843,17 @@ module.exports = function (self) {
 				const newconfig = {
 					...self.config,
 					...options,
-				}
-				self.config = newconfig
-				self.saveConfig(newconfig)
-				self.updateActions()
+				};
+				self.config = newconfig;
+				self.saveConfig(newconfig);
+				self.updateActions();
 
 				// Update variables
-				self.entry_formatted = await self.formatData(self.entry_raw)
+				self.entry_formatted = await self.formatData(self.entry_raw);
 				self.setVariableValues({
 					entry_formatted: self.entry_formatted,
-				})
+				});
 			},
 		},
-	})
-}
+	});
+};

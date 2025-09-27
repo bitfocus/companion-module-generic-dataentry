@@ -1,15 +1,15 @@
-const { InstanceBase, Regex, runEntrypoint, InstanceStatus } = require('@companion-module/base')
-const UpgradeScripts = require('./upgrades')
-const UpdateActions = require('./actions')
-const UpdateFeedbacks = require('./feedbacks')
-const UpdateVariableDefinitions = require('./variables')
-const UpdatePresetDefinitions = require('./presets')
-const { format, escape } = require('string-kit')
-const numfmt = require('numfmt')
+const { InstanceBase, Regex, runEntrypoint, InstanceStatus } = require('@companion-module/base');
+const UpgradeScripts = require('./upgrades');
+const UpdateActions = require('./actions');
+const UpdateFeedbacks = require('./feedbacks');
+const UpdateVariableDefinitions = require('./variables');
+const UpdatePresetDefinitions = require('./presets');
+const { format, escape } = require('string-kit');
+const numfmt = require('numfmt');
 
 class DataEntryInstance extends InstanceBase {
 	constructor(internal) {
-		super(internal)
+		super(internal);
 	}
 
 	/**
@@ -17,8 +17,8 @@ class DataEntryInstance extends InstanceBase {
 	 * @param {*} config config provided from core
 	 */
 	async init(config) {
-		this.config = config
-		this.updateStatus(InstanceStatus.Ok)
+		this.config = config;
+		this.updateStatus(InstanceStatus.Ok);
 
 		this.modifier = [
 			{
@@ -36,9 +36,9 @@ class DataEntryInstance extends InstanceBase {
 				onetime: false,
 				controls: new Set(),
 			},
-		]
+		];
 
-		this.timeout = undefined
+		this.timeout = undefined;
 
 		this.variables = [
 			{ variableId: 'entry_raw', name: 'Current entry', initial: '' },
@@ -50,27 +50,27 @@ class DataEntryInstance extends InstanceBase {
 			{ variableId: 'entry_cursor', name: 'Current entry with cursor shown', initial: this.config.cursor },
 			{ variableId: 'entry_cursor_position', name: 'Position of cursor', initial: 0 },
 			{ variableId: 'entrycounter', name: 'Counter of entries', initial: 0 },
-		]
-		this.updateVariableDefinitions()
-		this.initVariables()
+		];
+		this.updateVariableDefinitions();
+		this.initVariables();
 
-		this.updateActions()
-		this.updateFeedbacks()
-		this.updatePresetDefinitions()
+		this.updateActions();
+		this.updateFeedbacks();
+		this.updatePresetDefinitions();
 	}
 
 	/**
 	 * Cleanup stuff, get's called when module is destroyed
 	 */
 	async destroy() {
-		if (this.timeout) clearTimeout(this.timeout)
-		this.log('debug', 'destroy')
+		if (this.timeout) clearTimeout(this.timeout);
+		this.log('debug', 'destroy');
 	}
 
 	async configUpdated(config) {
-		this.cancelTimeout()
-		this.config = config
-		this.updateActions()
+		this.cancelTimeout();
+		this.config = config;
+		this.updateActions();
 	}
 
 	/**
@@ -78,10 +78,10 @@ class DataEntryInstance extends InstanceBase {
 	 */
 	async initVariables() {
 		this.variables.forEach((vari) => {
-			this[vari.variableId] = vari.initial ?? undefined
-		})
+			this[vari.variableId] = vari.initial ?? undefined;
+		});
 
-		const initObj = {}
+		const initObj = {};
 		this.setVariableValues(
 			this.variables
 				.filter((vari) => vari.initial != undefined)
@@ -89,9 +89,9 @@ class DataEntryInstance extends InstanceBase {
 					return {
 						...obj,
 						[vari.variableId]: vari.initial,
-					}
+					};
 				}, initObj),
-		)
+		);
 	}
 
 	/**
@@ -279,7 +279,7 @@ class DataEntryInstance extends InstanceBase {
 				default: '|',
 				regex: '/^.$/',
 			},
-		]
+		];
 	}
 
 	/**
@@ -288,15 +288,15 @@ class DataEntryInstance extends InstanceBase {
 	 * @returns {RegExp}
 	 */
 	buildRegex(string) {
-		const parts = string.match(/^\/(.+)\/([gmiyusvd]?)$/)
+		const parts = string.match(/^\/(.+)\/([gmiyusvd]?)$/);
 		if (parts === null) {
-			return new RegExp('^\b$') // if input is not a valid regexp, return valid regexp which never matches
+			return new RegExp('^\b$'); // if input is not a valid regexp, return valid regexp which never matches
 		} else {
 			try {
-				return new RegExp(parts[1], parts[2])
+				return new RegExp(parts[1], parts[2]);
 			} catch (error) {
-				this.log('error', `Cannot compile regular expression from "${string}", ${error.message}`)
-				return new RegExp('^\b$')
+				this.log('error', `Cannot compile regular expression from "${string}", ${error.message}`);
+				return new RegExp('^\b$');
 			}
 		}
 	}
@@ -315,24 +315,24 @@ class DataEntryInstance extends InstanceBase {
 				(this.config.autolengthformatted && this.entry_formatted.length >= this.config.enterlengthformatted) ||
 				(this.config.autoregex && this.buildRegex(this.config.enterregex).test(this.entry_raw))
 			) {
-				this.enter()
-				return
+				this.enter();
+				return;
 			}
 		} else if (this.config.criterialogic === 'and') {
 			// with 'and' any configured but unmet automation will abort
 			if (this.config.autotime && !timer) {
-				return
+				return;
 			}
 			if (this.config.autolengthraw && this.entry_raw.length < this.config.enterlengthraw) {
-				return
+				return;
 			}
 			if (this.config.autolengthformatted && this.entry_formatted.length < this.config.enterlengthformatted) {
-				return
+				return;
 			}
 			if (this.config.autoregex && !this.buildRegex(this.config.enterregex).test(this.entry_raw)) {
-				return
+				return;
 			}
-			this.enter()
+			this.enter();
 		}
 	}
 
@@ -341,8 +341,8 @@ class DataEntryInstance extends InstanceBase {
 	 */
 	cancelTimeout() {
 		if (this.timeout) {
-			clearTimeout(this.timeout)
-			this.timeout = undefined
+			clearTimeout(this.timeout);
+			this.timeout = undefined;
 		}
 	}
 
@@ -350,15 +350,15 @@ class DataEntryInstance extends InstanceBase {
 	 * Restarts the timer for the timeout
 	 */
 	restartTimeout() {
-		this.cancelTimeout()
-		this.timeout = setTimeout(this.fireTimeout.bind(this), this.config.timeout * 1000)
+		this.cancelTimeout();
+		this.timeout = setTimeout(this.fireTimeout.bind(this), this.config.timeout * 1000);
 	}
 
 	/**
 	 * Gets called when the timeout runs out
 	 */
 	fireTimeout() {
-		this.checkEnter(true)
+		this.checkEnter(true);
 	}
 
 	/**
@@ -367,34 +367,34 @@ class DataEntryInstance extends InstanceBase {
 	 * @param {'raw'|'formatted'|undefined} copy  if unset use the copy preference from configuration, if set copy this
 	 */
 	async enter(copy) {
-		this.cancelTimeout()
-		if (copy === undefined) copy = this.config.copydata
+		this.cancelTimeout();
+		if (copy === undefined) copy = this.config.copydata;
 		if (copy === 'raw') {
-			this.entry_second_last = this.entry_last
-			this.entry_last = this.entry_raw
+			this.entry_second_last = this.entry_last;
+			this.entry_last = this.entry_raw;
 		} else if (copy === 'formatted') {
-			this.entry_second_last = this.entry_last
-			this.entry_last = this.entry_formatted
+			this.entry_second_last = this.entry_last;
+			this.entry_last = this.entry_formatted;
 		} else {
-			this.log('error', 'copy data unknown: ' + copy)
+			this.log('error', 'copy data unknown: ' + copy);
 		}
 
 		this.setVariableValues({
 			entry_second_last: this.entry_second_last,
 			entry_last: this.entry_last,
-		})
+		});
 
-		this.entrycounter += 1
+		this.entrycounter += 1;
 
 		this.setVariableValues({
 			entrycounter: this.entrycounter,
-		})
+		});
 
 		if (copy !== 'none' && this.config.after === 'clear') {
-			await this.clearRaw()
+			await this.clearRaw();
 		}
 
-		this.checkFeedbacks('valid')
+		this.checkFeedbacks('valid');
 	}
 
 	/**
@@ -402,36 +402,36 @@ class DataEntryInstance extends InstanceBase {
 	 * @param {*} str
 	 */
 	getlocale(str) {
-		let from = 'en-US'
-		let to = 'en-US'
+		let from = 'en-US';
+		let to = 'en-US';
 		let locale = str.match(
 			/(\{(zh(?:-\w\w)?|cs(?:-\w\w)?|da(?:-\w\w)?|nl(?:-\w\w)?|en(?:-\w\w)?|fi(?:-\w\w)?|fr(?:-\w\w)?|de(?:-\w\w)?|el(?:-\w\w)?|hu(?:-\w\w)?|is(?:-\w\w)?|id(?:-\w\w)?|it(?:-\w\w)?|ja(?:-\w\w)?|ko(?:-\w\w)?|nb(?:-\w\w)?|pl(?:-\w\w)?|pt(?:-\w\w)?|ru(?:-\w\w)?|sk(?:-\w\w)?|es(?:-\w\w)?|sv(?:-\w\w)?|th(?:-\w\w)?|tr(?:-\w\w)?)\}){1,2}$/i,
-		)
+		);
 		if (locale === null) {
 			return {
 				apendix: '',
 				from,
 				to,
-			}
+			};
 		} else {
-			let locstr = locale[0]
-			locstr = locstr.replaceAll('}{', '|')
-			locstr = locstr.replaceAll(/[\{\}]/g, '')
-			let locales = locstr.split('|')
+			let locstr = locale[0];
+			locstr = locstr.replaceAll('}{', '|');
+			locstr = locstr.replaceAll(/[\{\}]/g, '');
+			let locales = locstr.split('|');
 
 			if (locales.length === 1) {
-				from = locales[0]
-				to = locales[0]
+				from = locales[0];
+				to = locales[0];
 			} else if (locales.length === 2) {
-				from = locales[0]
-				to = locales[1]
+				from = locales[0];
+				to = locales[1];
 			}
 		}
 		return {
 			apendix: locale[0],
 			from,
 			to,
-		}
+		};
 	}
 
 	/**
@@ -441,73 +441,73 @@ class DataEntryInstance extends InstanceBase {
 	 */
 	async formatData(string) {
 		const getEcmaParts = async () => {
-			const formatstr = await this.parseVariablesInString(this.config.formatecma)
-			const loc = this.getlocale(formatstr)
+			const formatstr = await this.parseVariablesInString(this.config.formatecma);
+			const loc = this.getlocale(formatstr);
 			return {
 				format: loc.apendix.length ? formatstr.slice(0, -1 * loc.apendix.length) : formatstr,
 				from: { locale: loc.from },
 				to: { locale: loc.to },
-			}
-		}
+			};
+		};
 
-		let formatted = ''
+		let formatted = '';
 		if (this.config.formattype === 'none') {
-			formatted = string
+			formatted = string;
 		} else if (this.config.formattype === 'ecmastring') {
-			const fmt = await getEcmaParts()
-			formatted = numfmt.format(fmt.format, string, fmt.to)
+			const fmt = await getEcmaParts();
+			formatted = numfmt.format(fmt.format, string, fmt.to);
 		} else if (this.config.formattype === 'ecmanumber') {
-			const fmt = await getEcmaParts()
-			let value = numfmt.parseNumber(string, fmt.from) ?? { v: '' }
-			formatted = numfmt.format(fmt.format, value.v, fmt.to)
+			const fmt = await getEcmaParts();
+			let value = numfmt.parseNumber(string, fmt.from) ?? { v: '' };
+			formatted = numfmt.format(fmt.format, value.v, fmt.to);
 		} else if (this.config.formattype === 'ecmadate') {
-			const fmt = await getEcmaParts()
-			let value = numfmt.parseDate(string, fmt.from) ?? { v: '' }
-			formatted = numfmt.format(fmt.format, value.v, fmt.to)
+			const fmt = await getEcmaParts();
+			let value = numfmt.parseDate(string, fmt.from) ?? { v: '' };
+			formatted = numfmt.format(fmt.format, value.v, fmt.to);
 		} else if (this.config.formattype === 'ecmatime') {
-			const fmt = await getEcmaParts()
-			let value = numfmt.parseTime(string, fmt.from) ?? { v: '' }
-			formatted = numfmt.format(fmt.format, value.v, fmt.to)
+			const fmt = await getEcmaParts();
+			let value = numfmt.parseTime(string, fmt.from) ?? { v: '' };
+			formatted = numfmt.format(fmt.format, value.v, fmt.to);
 		} else if (this.config.formattype === 'ecmabool') {
-			const fmt = await getEcmaParts()
-			let value = numfmt.parseBool(string, fmt.from) ?? { v: false }
-			formatted = numfmt.format(fmt.format, value.v, fmt.to)
+			const fmt = await getEcmaParts();
+			let value = numfmt.parseBool(string, fmt.from) ?? { v: false };
+			formatted = numfmt.format(fmt.format, value.v, fmt.to);
 		} else if (this.config.formattype === 'ecmaauto') {
-			const fmt = await getEcmaParts()
-			let value = numfmt.parseValue(string, fmt.from) ?? { v: '' }
-			formatted = numfmt.format(fmt.format, value.v, fmt.to)
+			const fmt = await getEcmaParts();
+			let value = numfmt.parseValue(string, fmt.from) ?? { v: '' };
+			formatted = numfmt.format(fmt.format, value.v, fmt.to);
 		} else if (this.config.formattype === 'printf') {
-			let formatstr = await this.parseVariablesInString(this.config.formatprintf)
-			formatted = format(formatstr, string)
+			let formatstr = await this.parseVariablesInString(this.config.formatprintf);
+			formatted = format(formatstr, string);
 		} else if (this.config.formattype === 'regex') {
-			let formatstr = await this.parseVariablesInString(this.config.formatregex)
-			let formatregex = formatstr.match(/^\/(.+)(?<!\\)\/(.*)\/([gmiyusvd]?)$/)
+			let formatstr = await this.parseVariablesInString(this.config.formatregex);
+			let formatregex = formatstr.match(/^\/(.+)(?<!\\)\/(.*)\/([gmiyusvd]?)$/);
 			if (Array.isArray(formatregex)) {
 				try {
-					formatted = string.replace(new RegExp(formatregex[1], formatregex[3]), formatregex[2].replaceAll('\\/', '/'))
+					formatted = string.replace(new RegExp(formatregex[1], formatregex[3]), formatregex[2].replaceAll('\\/', '/'));
 				} catch (error) {
-					formatted = string
-					this.log('error', `Regex formatting failed: ${error.message}`)
+					formatted = string;
+					this.log('error', `Regex formatting failed: ${error.message}`);
 				}
 			} else {
-				formatted = string
-				this.log('error', `Regex formatting failed: input is no valid regular expression`)
+				formatted = string;
+				this.log('error', `Regex formatting failed: input is no valid regular expression`);
 			}
 		} else {
-			formatted = string
+			formatted = string;
 		}
-		return formatted
+		return formatted;
 	}
 
 	/**
 	 * Clears the data in entry_raw and updates variables
 	 */
 	async clearRaw() {
-		this.entry_raw = ''
-		this.entry_cursor = this.config.cursor
-		this.entry_cursor_position = 0
-		this.entry_raw_length = 0
-		this.entry_formatted = await this.formatData(this.entry_raw)
+		this.entry_raw = '';
+		this.entry_cursor = this.config.cursor;
+		this.entry_cursor_position = 0;
+		this.entry_raw_length = 0;
+		this.entry_formatted = await this.formatData(this.entry_raw);
 
 		this.setVariableValues({
 			entry_raw: this.entry_raw,
@@ -515,7 +515,7 @@ class DataEntryInstance extends InstanceBase {
 			entry_cursor_position: this.entry_cursor_position,
 			entry_raw_length: this.entry_raw_length,
 			entry_formatted: this.entry_formatted,
-		})
+		});
 	}
 
 	/**
@@ -523,38 +523,38 @@ class DataEntryInstance extends InstanceBase {
 	 * @param {number} modifier which modifier to release
 	 */
 	releaseModifier(modifier) {
-		this.modifier[modifier].controls.clear()
-		this.modifier[modifier].effective = false
-		this.modifier[modifier].onetime = false
+		this.modifier[modifier].controls.clear();
+		this.modifier[modifier].effective = false;
+		this.modifier[modifier].onetime = false;
 	}
 
 	/**
 	 * Update the action definitions to core
 	 */
 	updateActions() {
-		UpdateActions(this)
+		UpdateActions(this);
 	}
 
 	/**
 	 * Update the feedback definitions to core
 	 */
 	updateFeedbacks() {
-		UpdateFeedbacks(this)
+		UpdateFeedbacks(this);
 	}
 
 	/**
 	 * Update the variable definitions to core
 	 */
 	updateVariableDefinitions() {
-		UpdateVariableDefinitions(this)
+		UpdateVariableDefinitions(this);
 	}
 
 	/**
 	 * Update the preset definitions to core
 	 */
 	updatePresetDefinitions() {
-		UpdatePresetDefinitions(this)
+		UpdatePresetDefinitions(this);
 	}
 }
 
-runEntrypoint(DataEntryInstance, UpgradeScripts)
+runEntrypoint(DataEntryInstance, UpgradeScripts);

@@ -3,6 +3,8 @@
 	"version": "1.0.1",
 	"main": "main.js",
 	"scripts": {
+		"lint": "eslint .",
+		"lint:fix": "eslint . --fix",
 		"format": "prettier -w .",
 		"package": "companion-module-build"
 	},
@@ -18,6 +20,7 @@
 	},
 	"devDependencies": {
 		"@companion-module/tools": "^2.4.0",
+		"eslint": "^9.0.0",
 		"prettier": "^3.3.3"
 	},
 	"prettier": "@companion-module/tools/.prettierrc.json",
