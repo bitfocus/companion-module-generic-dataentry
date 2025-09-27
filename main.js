@@ -121,9 +121,7 @@ class DataEntryInstance extends InstanceBase {
 				max: 65536,
 				step: 1,
 				default: 4,
-				isVisible: (conf) => {
-					return conf.autolengthraw === true
-				},
+				isVisibleExpression: `$(options:autolengthraw) == true`,
 			},
 			{
 				id: 'autolengthformatted',
@@ -141,9 +139,7 @@ class DataEntryInstance extends InstanceBase {
 				max: 65536,
 				step: 1,
 				default: 4,
-				isVisible: (conf) => {
-					return conf.autolengthformatted === true
-				},
+				isVisibleExpression: `$(options:autolengthformatted) == true`,
 			},
 			{
 				id: 'autoregex',
@@ -159,9 +155,7 @@ class DataEntryInstance extends InstanceBase {
 				width: 12,
 				default: '/.*/i',
 				regex: '/^/(.+)\\/([gmiyusvd]?)$/',
-				isVisible: (conf) => {
-					return conf.autoregex === true
-				},
+				isVisibleExpression: `$(options:autoregex) == true`,
 			},
 			{
 				id: 'autotime',
@@ -179,9 +173,7 @@ class DataEntryInstance extends InstanceBase {
 				max: 30,
 				step: 0.1,
 				default: 2.5,
-				isVisible: (conf) => {
-					return conf.autotime === true
-				},
+				isVisibleExpression: `$(options:autotime) == true`,
 			},
 			{
 				type: 'dropdown',
@@ -240,9 +232,7 @@ class DataEntryInstance extends InstanceBase {
 				label: '',
 				value: '',
 				width: 6,
-				isVisible: (opt) => {
-					return opt.formattype === 'none'
-				},
+				isVisibleExpression: `$(options:formattype) == 'none'`,
 			},
 			{
 				type: 'textinput',
@@ -251,9 +241,7 @@ class DataEntryInstance extends InstanceBase {
 				width: 6,
 				default: '*',
 				useVariables: true,
-				isVisible: (opt) => {
-					return !!opt && typeof opt.formattype === 'string' && opt.formattype.startsWith('ecma')
-				},
+				isVisibleExpression: `$(options:formattype) == 'ecmaauto' || $(options:formattype) == 'ecmastring' || $(options:formattype) == 'ecmanumber' || $(options:formattype) == 'ecmadate' || $(options:formattype) == 'ecmatime' || $(options:formattype) == 'ecmabool'`,
 			},
 			{
 				type: 'textinput',
@@ -262,9 +250,7 @@ class DataEntryInstance extends InstanceBase {
 				width: 6,
 				default: '%s',
 				useVariables: true,
-				isVisible: (opt) => {
-					return opt.formattype === 'printf'
-				},
+				isVisibleExpression: `$(options:formattype) == 'printf'`,
 			},
 			{
 				type: 'textinput',
@@ -273,9 +259,7 @@ class DataEntryInstance extends InstanceBase {
 				width: 6,
 				default: '/(.)/$1/g',
 				useVariables: true,
-				isVisible: (opt) => {
-					return opt.formattype === 'regex'
-				},
+				isVisibleExpression: `$(options:formattype) == 'regex'`,
 			},
 			{
 				type: 'number',
