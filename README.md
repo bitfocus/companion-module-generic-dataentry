@@ -9,6 +9,11 @@ For more information see [HELP.md](./companion/HELP.md) and [LICENSE](./LICENSE)
 
 ## Version History
 
+### 1.0.2 (2025-09-28)
+
+- fix: module config unable to load
+- chore: update dependencies
+
 ### 1.0.1 (2024-05-31)
 
 - fix: correct option wording in RegExp Validation feedback
