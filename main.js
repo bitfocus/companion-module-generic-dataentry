@@ -90,7 +90,7 @@ class DataEntryInstance extends InstanceBase {
 						...obj,
 						[vari.variableId]: vari.initial,
 					}
-				}, initObj)
+				}, initObj),
 		)
 	}
 
@@ -121,9 +121,7 @@ class DataEntryInstance extends InstanceBase {
 				max: 65536,
 				step: 1,
 				default: 4,
-				isVisible: (conf) => {
-					return conf.autolengthraw === true
-				},
+				isVisibleExpression: `$(options:autolengthraw) == true`,
 			},
 			{
 				id: 'autolengthformatted',
@@ -141,9 +139,7 @@ class DataEntryInstance extends InstanceBase {
 				max: 65536,
 				step: 1,
 				default: 4,
-				isVisible: (conf) => {
-					return conf.autolengthformatted === true
-				},
+				isVisibleExpression: `$(options:autolengthformatted) == true`,
 			},
 			{
 				id: 'autoregex',
@@ -159,9 +155,7 @@ class DataEntryInstance extends InstanceBase {
 				width: 12,
 				default: '/.*/i',
 				regex: '/^/(.+)\\/([gmiyusvd]?)$/',
-				isVisible: (conf) => {
-					return conf.autoregex === true
-				},
+				isVisibleExpression: `$(options:autoregex) == true`,
 			},
 			{
 				id: 'autotime',
@@ -179,9 +173,7 @@ class DataEntryInstance extends InstanceBase {
 				max: 30,
 				step: 0.1,
 				default: 2.5,
-				isVisible: (conf) => {
-					return conf.autotime === true
-				},
+				isVisibleExpression: `$(options:autotime) == true`,
 			},
 			{
 				type: 'dropdown',
@@ -240,9 +232,7 @@ class DataEntryInstance extends InstanceBase {
 				label: '',
 				value: '',
 				width: 6,
-				isVisible: (opt) => {
-					return opt.formattype === 'none'
-				},
+				isVisibleExpression: `$(options:formattype) == 'none'`,
 			},
 			{
 				type: 'textinput',
@@ -251,9 +241,7 @@ class DataEntryInstance extends InstanceBase {
 				width: 6,
 				default: '*',
 				useVariables: true,
-				isVisible: (opt) => {
-					return opt.formattype.startsWith('ecma')
-				},
+				isVisibleExpression: `includes($(options:formattype), "ecma")`,
 			},
 			{
 				type: 'textinput',
@@ -262,9 +250,7 @@ class DataEntryInstance extends InstanceBase {
 				width: 6,
 				default: '%s',
 				useVariables: true,
-				isVisible: (opt) => {
-					return opt.formattype === 'printf'
-				},
+				isVisibleExpression: `$(options:formattype) == 'printf'`,
 			},
 			{
 				type: 'textinput',
@@ -273,9 +259,7 @@ class DataEntryInstance extends InstanceBase {
 				width: 6,
 				default: '/(.)/$1/g',
 				useVariables: true,
-				isVisible: (opt) => {
-					return opt.formattype === 'regex'
-				},
+				isVisibleExpression: `$(options:formattype) == 'regex'`,
 			},
 			{
 				type: 'number',
@@ -421,7 +405,7 @@ class DataEntryInstance extends InstanceBase {
 		let from = 'en-US'
 		let to = 'en-US'
 		let locale = str.match(
-			/(\{(zh(?:-\w\w)?|cs(?:-\w\w)?|da(?:-\w\w)?|nl(?:-\w\w)?|en(?:-\w\w)?|fi(?:-\w\w)?|fr(?:-\w\w)?|de(?:-\w\w)?|el(?:-\w\w)?|hu(?:-\w\w)?|is(?:-\w\w)?|id(?:-\w\w)?|it(?:-\w\w)?|ja(?:-\w\w)?|ko(?:-\w\w)?|nb(?:-\w\w)?|pl(?:-\w\w)?|pt(?:-\w\w)?|ru(?:-\w\w)?|sk(?:-\w\w)?|es(?:-\w\w)?|sv(?:-\w\w)?|th(?:-\w\w)?|tr(?:-\w\w)?)\}){1,2}$/i
+			/(\{(zh(?:-\w\w)?|cs(?:-\w\w)?|da(?:-\w\w)?|nl(?:-\w\w)?|en(?:-\w\w)?|fi(?:-\w\w)?|fr(?:-\w\w)?|de(?:-\w\w)?|el(?:-\w\w)?|hu(?:-\w\w)?|is(?:-\w\w)?|id(?:-\w\w)?|it(?:-\w\w)?|ja(?:-\w\w)?|ko(?:-\w\w)?|nb(?:-\w\w)?|pl(?:-\w\w)?|pt(?:-\w\w)?|ru(?:-\w\w)?|sk(?:-\w\w)?|es(?:-\w\w)?|sv(?:-\w\w)?|th(?:-\w\w)?|tr(?:-\w\w)?)\}){1,2}$/i,
 		)
 		if (locale === null) {
 			return {
