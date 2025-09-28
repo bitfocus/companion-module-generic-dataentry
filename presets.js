@@ -1,5 +1,5 @@
 module.exports = function (self) {
-	const presets = {};
+	const presets = {}
 
 	const makePreset = (opt, cat) => {
 		let data0 = '',
@@ -12,13 +12,13 @@ module.exports = function (self) {
 			feedbacks = [],
 			desc = '',
 			size = '44',
-			button = '';
+			button = ''
 		if (Array.isArray(opt)) {
-			data0 = opt[0].toString();
-			desc = data0;
+			data0 = opt[0].toString()
+			desc = data0
 			if (opt.length > 1) {
-				data1type = true;
-				data1 = opt[1].toString();
+				data1type = true
+				data1 = opt[1].toString()
 				feedbacks.push({
 					feedbackId: 'modifier',
 					options: {
@@ -28,11 +28,11 @@ module.exports = function (self) {
 					style: {
 						text: data1,
 					},
-				});
+				})
 			}
 			if (opt.length > 2) {
-				data2type = true;
-				data2 = opt[2].toString();
+				data2type = true
+				data2 = opt[2].toString()
 				feedbacks.push({
 					feedbackId: 'modifier',
 					options: {
@@ -42,11 +42,11 @@ module.exports = function (self) {
 					style: {
 						text: data2,
 					},
-				});
+				})
 			}
 			if (opt.length > 3) {
-				data3type = true;
-				data3 = opt[3].toString();
+				data3type = true
+				data3 = opt[3].toString()
 				feedbacks.push({
 					feedbackId: 'modifier',
 					options: {
@@ -56,16 +56,16 @@ module.exports = function (self) {
 					style: {
 						text: data3,
 					},
-				});
+				})
 			}
 		} else if (typeof opt === 'object') {
-			data0 = opt.data0;
-			desc = opt.desc || data0;
-			button = opt.button || data0;
-			if (opt.size) size = opt.size.toString();
+			data0 = opt.data0
+			desc = opt.desc || data0
+			button = opt.button || data0
+			if (opt.size) size = opt.size.toString()
 		} else {
-			data0 = opt.toString();
-			desc = data0;
+			data0 = opt.toString()
+			desc = data0
 		}
 		presets[`${cat}${desc}`] = {
 			type: 'button',
@@ -98,14 +98,14 @@ module.exports = function (self) {
 				},
 			],
 			feedbacks,
-		};
-	};
+		}
+	}
 
 	for (let i = 0; i <= 9; i += 1) {
-		makePreset(i, 'Numpad');
+		makePreset(i, 'Numpad')
 	}
-	makePreset(',', 'Numpad');
-	makePreset('.', 'Numpad');
+	makePreset(',', 'Numpad')
+	makePreset('.', 'Numpad')
 
 	const uskeyb = [
 		['a', 'A', 'á', 'Á'],
@@ -150,15 +150,15 @@ module.exports = function (self) {
 		[']', '}', '»', '›'],
 		['\\', '|', '﹁', '¦'],
 		[';', ':', '¶', '°'],
-		['\'', '"', '′', ' ̈'],
+		["'", '"', '′', ' ̈'],
 		[',', '<', 'ç', 'Ç'],
 		['.', '>', '', '>'],
 		['/', '?', '¿', '?'],
 		['`', '~', '`', '~'],
-	];
+	]
 
 	for (const key of uskeyb) {
-		makePreset(key, 'US Keyboard');
+		makePreset(key, 'US Keyboard')
 	}
 	presets['space'] = {
 		type: 'button',
@@ -191,7 +191,7 @@ module.exports = function (self) {
 			},
 		],
 		feedbacks: [],
-	};
+	}
 
 	presets['control_enter'] = {
 		type: 'button',
@@ -217,7 +217,7 @@ module.exports = function (self) {
 			},
 		],
 		feedbacks: [],
-	};
+	}
 
 	presets['control_shift'] = {
 		type: 'button',
@@ -263,7 +263,7 @@ module.exports = function (self) {
 				},
 			},
 		],
-	};
+	}
 
 	presets['control_capslock'] = {
 		type: 'button',
@@ -301,7 +301,7 @@ module.exports = function (self) {
 				},
 			},
 		],
-	};
+	}
 
 	presets['control_shiftonetime'] = {
 		type: 'button',
@@ -339,7 +339,7 @@ module.exports = function (self) {
 				},
 			},
 		],
-	};
+	}
 
 	presets['control_alt'] = {
 		type: 'button',
@@ -377,7 +377,7 @@ module.exports = function (self) {
 				},
 			},
 		],
-	};
+	}
 
 	presets['control_cursorleft'] = {
 		type: 'button',
@@ -404,7 +404,7 @@ module.exports = function (self) {
 			},
 		],
 		feedbacks: [],
-	};
+	}
 
 	presets['control_cursorright'] = {
 		type: 'button',
@@ -431,7 +431,7 @@ module.exports = function (self) {
 			},
 		],
 		feedbacks: [],
-	};
+	}
 
 	presets['control_cursorstart'] = {
 		type: 'button',
@@ -458,7 +458,7 @@ module.exports = function (self) {
 			},
 		],
 		feedbacks: [],
-	};
+	}
 
 	presets['control_cursorend'] = {
 		type: 'button',
@@ -485,7 +485,7 @@ module.exports = function (self) {
 			},
 		],
 		feedbacks: [],
-	};
+	}
 
 	presets['control_backspace'] = {
 		type: 'button',
@@ -512,7 +512,7 @@ module.exports = function (self) {
 			},
 		],
 		feedbacks: [],
-	};
+	}
 
 	presets['control_delete'] = {
 		type: 'button',
@@ -539,7 +539,7 @@ module.exports = function (self) {
 			},
 		],
 		feedbacks: [],
-	};
+	}
 
 	presets['control_clear'] = {
 		type: 'button',
@@ -569,7 +569,7 @@ module.exports = function (self) {
 			},
 		],
 		feedbacks: [],
-	};
+	}
 
 	const diacritics = [
 		{ data0: '\u0300', button: ' ̀', desc: 'Combining Grave Accent' },
@@ -684,16 +684,16 @@ module.exports = function (self) {
 		{ data0: '\u036D', button: ' ͭ', desc: 'Combining Latin Small Letter T' },
 		{ data0: '\u036E', button: ' ͮ', desc: 'Combining Latin Small Letter V' },
 		{ data0: '\u036F', button: ' ͯ', desc: 'Combining Latin Small Letter X ' },
-	];
+	]
 
 	for (const dia of diacritics) {
-		makePreset({ ...dia, size: '30' }, 'Diacritics');
+		makePreset({ ...dia, size: '30' }, 'Diacritics')
 		presets[`Diacritics${dia.desc}`].steps[0].down.push({
 			actionId: 'normalizeEntry',
 			options: [],
 			delay: 5,
-		});
+		})
 	}
 
-	self.setPresetDefinitions(presets);
-};
+	self.setPresetDefinitions(presets)
+}

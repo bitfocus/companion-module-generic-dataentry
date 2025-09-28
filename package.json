@@ -14,12 +14,12 @@
 		"url": "git+https://github.com/bitfocus/companion-module-generic-dataentry.git"
 	},
 	"dependencies": {
-		"@companion-module/base": "^1.13.2",
+		"@companion-module/base": "~1.12.0",
 		"numfmt": "^2.5.2",
 		"string-kit": "^0.17.10"
 	},
 	"devDependencies": {
-		"@companion-module/tools": "^2.4.0",
+		"@companion-module/tools": "^2.0.0",
 		"eslint": "^9.0.0",
 		"prettier": "^3.3.3"
 	},

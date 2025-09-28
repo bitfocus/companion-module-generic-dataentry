@@ -1,4 +1,4 @@
-const { combineRgb } = require('@companion-module/base');
+const { combineRgb } = require('@companion-module/base')
 
 module.exports = async function (self) {
 	self.setFeedbackDefinitions({
@@ -36,15 +36,15 @@ module.exports = async function (self) {
 			callback: ({ options, controlId }) => {
 				if (options.modifier === 1 || options.modifier === 2) {
 					if (options.location === 'anywhere') {
-						return self.modifier[options.modifier].effective;
+						return self.modifier[options.modifier].effective
 					} else if (options.location === 'here') {
-						return self.modifier[options.modifier].controls.has(controlId);
+						return self.modifier[options.modifier].controls.has(controlId)
 					}
 				} else if (options.modifier === 3) {
 					if (options.location === 'anywhere') {
-						return self.modifier[1].effective && self.modifier[2].effective;
+						return self.modifier[1].effective && self.modifier[2].effective
 					} else if (options.location === 'here') {
-						return self.modifier[1].controls.has(controlId) && self.modifier[2].controls.has(controlId);
+						return self.modifier[1].controls.has(controlId) && self.modifier[2].controls.has(controlId)
 					}
 				}
 			},
@@ -78,28 +78,28 @@ module.exports = async function (self) {
 				},
 			],
 			callback: ({ options }) => {
-				let string = '';
+				let string = ''
 				switch (options.data) {
-				case 'raw':
-					string = self.entry_raw;
-					break;
+					case 'raw':
+						string = self.entry_raw
+						break
 
-				case 'formatted':
-					string = self.entry_formatted;
-					break;
+					case 'formatted':
+						string = self.entry_formatted
+						break
 
-				case 'raw_last':
-					string = self.entry_last;
-					break;
+					case 'raw_last':
+						string = self.entry_last
+						break
 				}
 
 				try {
-					return self.buildRegex(options.regex).test(string);
+					return self.buildRegex(options.regex).test(string)
 				} catch (error) {
-					self.log('error', 'Testing for regular expression in feedback failed, ' + error.message);
-					return false;
+					self.log('error', 'Testing for regular expression in feedback failed, ' + error.message)
+					return false
 				}
 			},
 		},
-	});
-};
+	})
+}
