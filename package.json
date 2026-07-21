@@ -1,6 +1,6 @@
 {
 	"name": "companion-module-generic-dataentry",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"main": "main.js",
 	"scripts": {
 		"lint": "eslint .",
@@ -14,14 +14,14 @@
 		"url": "git+https://github.com/bitfocus/companion-module-generic-dataentry.git"
 	},
 	"dependencies": {
-		"@companion-module/base": "~1.12.0",
+		"@companion-module/base": "~1.12.1",
 		"numfmt": "^2.5.2",
 		"string-kit": "^0.17.10"
 	},
 	"devDependencies": {
-		"@companion-module/tools": "^2.6.1",
-		"eslint": "^9.0.0",
-		"prettier": "^3.3.3"
+		"@companion-module/tools": "^2.7.2",
+		"eslint": "^9.39.5",
+		"prettier": "^3.9.6"
 	},
 	"prettier": "@companion-module/tools/.prettierrc.json",
 	"packageManager": "yarn@4.10.3"
