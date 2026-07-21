@@ -9,6 +9,11 @@ For more information see [HELP.md](./companion/HELP.md) and [LICENSE](./LICENSE)
 
 ## Version History
 
+### 1.0.3 (2026-07-221)
+
+- fix: preset text color defaulting to black
+- chore: update dependencies
+
 ### 1.0.2 (2025-09-28)
 
 - fix: module config unable to load
