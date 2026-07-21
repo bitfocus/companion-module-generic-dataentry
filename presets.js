@@ -13,8 +13,7 @@ module.exports = function (self) {
 			data3type = false,
 			feedbacks = [],
 			desc = '',
-			size = '44',
-			button = ''
+			size = '44'
 		if (Array.isArray(opt)) {
 			data0 = opt[0].toString()
 			desc = data0
@@ -63,7 +62,6 @@ module.exports = function (self) {
 		} else if (typeof opt === 'object') {
 			data0 = opt.data0
 			desc = opt.desc || data0
-			button = opt.button || data0
 			if (opt.size) size = opt.size.toString()
 		} else {
 			data0 = opt.toString()

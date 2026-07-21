@@ -1,5 +1,3 @@
-const { splice } = require('./upgrades')
-
 module.exports = function (self) {
 	self.setActionDefinitions({
 		insertData: {
