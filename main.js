@@ -1,10 +1,10 @@
-const { InstanceBase, Regex, runEntrypoint, InstanceStatus } = require('@companion-module/base')
+const { InstanceBase, runEntrypoint, InstanceStatus } = require('@companion-module/base')
 const UpgradeScripts = require('./upgrades')
 const UpdateActions = require('./actions')
 const UpdateFeedbacks = require('./feedbacks')
 const UpdateVariableDefinitions = require('./variables')
 const UpdatePresetDefinitions = require('./presets')
-const { format, escape } = require('string-kit')
+const { format } = require('string-kit')
 const numfmt = require('numfmt')
 
 class DataEntryInstance extends InstanceBase {
@@ -290,13 +290,13 @@ class DataEntryInstance extends InstanceBase {
 	buildRegex(string) {
 		const parts = string.match(/^\/(.+)\/([gmiyusvd]?)$/)
 		if (parts === null) {
-			return new RegExp('^\b$') // if input is not a valid regexp, return valid regexp which never matches
+			return /(?!)/ // if input is not a valid regexp, return valid regexp which never matches
 		} else {
 			try {
 				return new RegExp(parts[1], parts[2])
 			} catch (error) {
 				this.log('error', `Cannot compile regular expression from "${string}", ${error.message}`)
-				return new RegExp('^\b$')
+				return /(?!)/
 			}
 		}
 	}
@@ -416,7 +416,7 @@ class DataEntryInstance extends InstanceBase {
 		} else {
 			let locstr = locale[0]
 			locstr = locstr.replaceAll('}{', '|')
-			locstr = locstr.replaceAll(/[\{\}]/g, '')
+			locstr = locstr.replaceAll(/[{}]/g, '')
 			let locales = locstr.split('|')
 
 			if (locales.length === 1) {
