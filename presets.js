@@ -1,3 +1,5 @@
+const { combineRgb } = require('@companion-module/base')
+
 module.exports = function (self) {
 	const presets = {}
 
@@ -74,8 +76,8 @@ module.exports = function (self) {
 			style: {
 				text: `${data0}`,
 				size,
-				color: '#fff',
-				bgcolor: 'rgb(10,10,10)',
+				color: combineRgb(255, 255, 255),
+				bgcolor: combineRgb(10, 10, 10),
 			},
 			steps: [
 				{
@@ -167,8 +169,8 @@ module.exports = function (self) {
 		style: {
 			text: `␣`,
 			size: '44',
-			color: '#fff',
-			bgcolor: 'rgb(10, 10, 10)',
+			color: combineRgb(255, 255, 255),
+			bgcolor: combineRgb(10, 10, 10),
 		},
 		steps: [
 			{
@@ -200,8 +202,8 @@ module.exports = function (self) {
 		style: {
 			text: `⏎`,
 			size: '44',
-			color: '#fff',
-			bgcolor: 'rgb(10, 10, 10)',
+			color: combineRgb(255, 255, 255),
+			bgcolor: combineRgb(10, 10, 10),
 		},
 		steps: [
 			{
@@ -226,8 +228,8 @@ module.exports = function (self) {
 		style: {
 			text: `⇧`,
 			size: '44',
-			color: '#fff',
-			bgcolor: 'rgb(10, 10, 10)',
+			color: combineRgb(255, 255, 255),
+			bgcolor: combineRgb(10, 10, 10),
 		},
 		steps: [
 			{
@@ -259,7 +261,7 @@ module.exports = function (self) {
 					location: 'anywhere',
 				},
 				style: {
-					bgcolor: 'rgb(100, 100, 100)',
+					bgcolor: combineRgb(100, 100, 100),
 				},
 			},
 		],
@@ -272,8 +274,8 @@ module.exports = function (self) {
 		style: {
 			text: `⇪`,
 			size: '44',
-			color: '#fff',
-			bgcolor: 'rgb(10, 10, 10)',
+			color: combineRgb(255, 255, 255),
+			bgcolor: combineRgb(10, 10, 10),
 		},
 		steps: [
 			{
@@ -297,7 +299,7 @@ module.exports = function (self) {
 					location: 'anywhere',
 				},
 				style: {
-					bgcolor: 'rgb(100, 100, 100)',
+					bgcolor: combineRgb(100, 100, 100),
 				},
 			},
 		],
@@ -310,8 +312,8 @@ module.exports = function (self) {
 		style: {
 			text: `⌤`,
 			size: '44',
-			color: '#fff',
-			bgcolor: 'rgb(10, 10, 10)',
+			color: combineRgb(255, 255, 255),
+			bgcolor: combineRgb(10, 10, 10),
 		},
 		steps: [
 			{
@@ -335,7 +337,7 @@ module.exports = function (self) {
 					location: 'anywhere',
 				},
 				style: {
-					bgcolor: 'rgb(100, 100, 100)',
+					bgcolor: combineRgb(100, 100, 100),
 				},
 			},
 		],
@@ -348,8 +350,8 @@ module.exports = function (self) {
 		style: {
 			text: `⌥`,
 			size: '44',
-			color: '#fff',
-			bgcolor: 'rgb(10, 10, 10)',
+			color: combineRgb(255, 255, 255),
+			bgcolor: combineRgb(10, 10, 10),
 		},
 		steps: [
 			{
@@ -373,7 +375,7 @@ module.exports = function (self) {
 					location: 'anywhere',
 				},
 				style: {
-					bgcolor: 'rgb(100, 100, 100)',
+					bgcolor: combineRgb(100, 100, 100),
 				},
 			},
 		],
@@ -386,8 +388,8 @@ module.exports = function (self) {
 		style: {
 			text: `🠜`,
 			size: '44',
-			color: '#fff',
-			bgcolor: 'rgb(10, 10, 10)',
+			color: combineRgb(255, 255, 255),
+			bgcolor: combineRgb(10, 10, 10),
 		},
 		steps: [
 			{
@@ -413,8 +415,8 @@ module.exports = function (self) {
 		style: {
 			text: `🠞`,
 			size: '44',
-			color: '#fff',
-			bgcolor: 'rgb(10, 10, 10)',
+			color: combineRgb(255, 255, 255),
+			bgcolor: combineRgb(10, 10, 10),
 		},
 		steps: [
 			{
@@ -440,8 +442,8 @@ module.exports = function (self) {
 		style: {
 			text: `⇤`,
 			size: '44',
-			color: '#fff',
-			bgcolor: 'rgb(10, 10, 10)',
+			color: combineRgb(255, 255, 255),
+			bgcolor: combineRgb(10, 10, 10),
 		},
 		steps: [
 			{
@@ -467,8 +469,8 @@ module.exports = function (self) {
 		style: {
 			text: `⇥`,
 			size: '44',
-			color: '#fff',
-			bgcolor: 'rgb(10, 10, 10)',
+			color: combineRgb(255, 255, 255),
+			bgcolor: combineRgb(10, 10, 10),
 		},
 		steps: [
 			{
@@ -494,8 +496,8 @@ module.exports = function (self) {
 		style: {
 			text: `⌫`,
 			size: '44',
-			color: '#fff',
-			bgcolor: 'rgb(10, 10, 10)',
+			color: combineRgb(255, 255, 255),
+			bgcolor: combineRgb(10, 10, 10),
 		},
 		steps: [
 			{
@@ -521,8 +523,8 @@ module.exports = function (self) {
 		style: {
 			text: `⌦`,
 			size: '44',
-			color: '#fff',
-			bgcolor: 'rgb(10, 10, 10)',
+			color: combineRgb(255, 255, 255),
+			bgcolor: combineRgb(10, 10, 10),
 		},
 		steps: [
 			{
@@ -548,8 +550,8 @@ module.exports = function (self) {
 		style: {
 			text: `⌧`,
 			size: '44',
-			color: '#fff',
-			bgcolor: 'rgb(10, 10, 10)',
+			color: combineRgb(255, 255, 255),
+			bgcolor: combineRgb(10, 10, 10),
 		},
 		steps: [
 			{
