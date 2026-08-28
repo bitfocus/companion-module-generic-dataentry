@@ -19,7 +19,7 @@
 		"string-kit": "^0.17.10"
 	},
 	"devDependencies": {
-		"@companion-module/tools": "^2.7.2",
+		"@companion-module/tools": "^2.8.0",
 		"eslint": "^9.39.5",
 		"prettier": "^3.9.6"
 	},
