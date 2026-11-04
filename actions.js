@@ -64,7 +64,7 @@ module.exports = function (self) {
 			],
 			callback: async ({ options }) => {
 				// Calculate insertion position
-				let posstring = await self.parseVariablesInString(options.position)
+				let posstring = String(options.position ?? '')
 				let pos = parseInt(posstring)
 				if (isNaN(pos)) {
 					pos = self.entry_cursor_position
@@ -80,16 +80,16 @@ module.exports = function (self) {
 				// Find data to insert
 				let data = ''
 				if (self.modifier[1].effective && self.modifier[2].effective) {
-					if (options.data3type) data = await self.parseVariablesInString(options.data3)
-					else data = await self.parseVariablesInString(options.data0)
+					if (options.data3type) data = String(options.data3 ?? '')
+					else data = String(options.data0 ?? '')
 				} else if (!self.modifier[1].effective && self.modifier[2].effective) {
-					if (options.data2type) data = await self.parseVariablesInString(options.data2)
-					else data = await self.parseVariablesInString(options.data0)
+					if (options.data2type) data = String(options.data2 ?? '')
+					else data = String(options.data0 ?? '')
 				} else if (self.modifier[1].effective && !self.modifier[2].effective) {
-					if (options.data1type) data = await self.parseVariablesInString(options.data1)
-					else data = await self.parseVariablesInString(options.data0)
+					if (options.data1type) data = String(options.data1 ?? '')
+					else data = String(options.data0 ?? '')
 				} else {
-					data = await self.parseVariablesInString(options.data0)
+					data = String(options.data0 ?? '')
 				}
 
 				// Do insertion
@@ -215,7 +215,7 @@ module.exports = function (self) {
 			],
 			callback: async ({ options }) => {
 				// Calculate start position
-				let startstring = await self.parseVariablesInString(options.startposition)
+				let startstring = String(options.startposition ?? '')
 				let start = parseInt(startstring)
 				if (isNaN(start)) {
 					start = self.entry_cursor_position
@@ -229,7 +229,7 @@ module.exports = function (self) {
 				}
 
 				// Calculate end position
-				let endstring = await self.parseVariablesInString(options.position)
+				let endstring = String(options.position ?? '')
 				let end
 				if (endstring === '') {
 					end = null
@@ -250,16 +250,16 @@ module.exports = function (self) {
 				// Find data to overwrite
 				let data = ''
 				if (self.modifier[1].effective && self.modifier[2].effective) {
-					if (options.data3type) data = await self.parseVariablesInString(options.data3)
-					else data = await self.parseVariablesInString(options.data0)
+					if (options.data3type) data = String(options.data3 ?? '')
+					else data = String(options.data0 ?? '')
 				} else if (!self.modifier[1].effective && self.modifier[2].effective) {
-					if (options.data2type) data = await self.parseVariablesInString(options.data2)
-					else data = await self.parseVariablesInString(options.data0)
+					if (options.data2type) data = String(options.data2 ?? '')
+					else data = String(options.data0 ?? '')
 				} else if (self.modifier[1].effective && !self.modifier[2].effective) {
-					if (options.data1type) data = await self.parseVariablesInString(options.data1)
-					else data = await self.parseVariablesInString(options.data0)
+					if (options.data1type) data = String(options.data1 ?? '')
+					else data = String(options.data0 ?? '')
 				} else {
-					data = await self.parseVariablesInString(options.data0)
+					data = String(options.data0 ?? '')
 				}
 
 				if (end !== null) {
@@ -348,7 +348,7 @@ module.exports = function (self) {
 			],
 			callback: async ({ options }) => {
 				// Calculate position
-				let posstring = await self.parseVariablesInString(options.position)
+				let posstring = String(options.position ?? '')
 				let pos = parseInt(posstring)
 				if (isNaN(pos)) {
 					pos = self.entry_cursor_position
@@ -421,7 +421,7 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				let data = await self.parseVariablesInString(options.data)
+				let data = String(options.data ?? '')
 
 				// Do set
 				self.entry_raw = data

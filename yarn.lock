@@ -5,26 +5,26 @@ __metadata:
   version: 8
   cacheKey: 10c0
 
-"@companion-module/base@npm:~1.12.1":
-  version: 1.12.1
-  resolution: "@companion-module/base@npm:1.12.1"
+"@companion-module/base@npm:~1.15.0":
+  version: 1.15.1
+  resolution: "@companion-module/base@npm:1.15.1"
   dependencies:
-    ajv: "npm:^8.17.1"
-    colord: "npm:^2.9.3"
+    ajv: "npm:^8.20.0"
+    colord: "npm:^2.10.0"
     ejson: "npm:^2.2.3"
     eventemitter3: "npm:^5.0.1"
     mimic-fn: "npm:^3.1.0"
-    nanoid: "npm:^3.3.11"
+    nanoid: "npm:^3.3.20"
     p-queue: "npm:^6.6.2"
     p-timeout: "npm:^4.1.0"
     tslib: "npm:^2.8.1"
-  checksum: 10c0/11e67f87ba7f1dff830247882638da7cbc07d70ae47c606f43876ed183657b81ac7264e771e79735486d93c9845b0f28cfc8283d5d24b1b9eeb13a8e5b82db9d
+  checksum: 10c0/47f0b715376dc61b25d36126bd2369c6a5074ab461509a6611b75ecc9ce4a758be7971c2a11770e89251e0e75f57216e0ddb01cffe6d2cfb18f4c27f881d7b9d
   languageName: node
   linkType: hard
 
-"@companion-module/tools@npm:^2.8.0":
-  version: 2.8.0
-  resolution: "@companion-module/tools@npm:2.8.0"
+"@companion-module/tools@npm:^2.9.0":
+  version: 2.9.1
+  resolution: "@companion-module/tools@npm:2.9.1"
   dependencies:
     "@eslint/js": "npm:^9.39.3"
     eslint-config-prettier: "npm:^10.1.8"
@@ -35,7 +35,7 @@ __metadata:
     semver: "npm:^7.7.4"
     spdx-expression-parse: "npm:^5.0.0"
     tar: "npm:^7.5.9"
-    webpack: "npm:^5.105.2"
+    webpack: "npm:5.109.2"
     webpack-cli: "npm:^6.0.1"
     zx: "npm:^8.8.5"
   peerDependencies:
@@ -61,7 +61,7 @@ __metadata:
     companion-module-check: scripts/check-connection.js
     companion-surface-build: scripts/build-surface.js
     companion-surface-check: scripts/check-surface.js
-  checksum: 10c0/e433ee2ae142d02a3654b9c778a9cf8fde6a2b250c8a6b0219b219cd5e335b0a317f2cb201cd66356bdb6520c28a8eaeee497be7011bcf4232fac07c5659874b
+  checksum: 10c0/77bbad38d5ce735f16bfab16ac2c403d4e2b3676d39dddd409d0acdab0ef78700b07ebdd32f2459ebf5bdf80377211d22451b2aa4487186b5d538078c7a66561
   languageName: node
   linkType: hard
 
@@ -482,15 +482,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"acorn-import-phases@npm:^1.0.3":
-  version: 1.0.4
-  resolution: "acorn-import-phases@npm:1.0.4"
-  peerDependencies:
-    acorn: ^8.14.0
-  checksum: 10c0/338eb46fc1aed5544f628344cb9af189450b401d152ceadbf1f5746901a5d923016cd0e7740d5606062d374fdf6941c29bb515d2bd133c4f4242d5d4cd73a3c7
-  languageName: node
-  linkType: hard
-
 "acorn-jsx@npm:^5.3.2":
   version: 5.3.2
   resolution: "acorn-jsx@npm:5.3.2"
@@ -546,7 +537,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ajv@npm:^8.0.0, ajv@npm:^8.17.1, ajv@npm:^8.9.0":
+"ajv@npm:^8.0.0, ajv@npm:^8.9.0":
   version: 8.17.1
   resolution: "ajv@npm:8.17.1"
   dependencies:
@@ -555,6 +546,18 @@ __metadata:
     json-schema-traverse: "npm:^1.0.0"
     require-from-string: "npm:^2.0.2"
   checksum: 10c0/ec3ba10a573c6b60f94639ffc53526275917a2df6810e4ab5a6b959d87459f9ef3f00d5e7865b82677cb7d21590355b34da14d1d0b9c32d75f95a187e76fff35
+  languageName: node
+  linkType: hard
+
+"ajv@npm:^8.20.0":
+  version: 8.20.0
+  resolution: "ajv@npm:8.20.0"
+  dependencies:
+    fast-deep-equal: "npm:^3.1.3"
+    fast-uri: "npm:^3.0.1"
+    json-schema-traverse: "npm:^1.0.0"
+    require-from-string: "npm:^2.0.2"
+  checksum: 10c0/5df9a1c8f83863cde1bd3a9ddb426f599718f88e3dc9153616c79fb28e0be455335830d7f21d745576519f057b371352daa31047b6a33d7036fe08777d60cf2a
   languageName: node
   linkType: hard
 
@@ -694,7 +697,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"colord@npm:^2.9.3":
+"colord@npm:^2.10.0":
   version: 2.10.0
   resolution: "colord@npm:2.10.0"
   checksum: 10c0/2f5d1d1759124f593deca17bbbab8a88bdc3ab68bbcc88db76c1192d9a5d575db202badde044bf61789561fa0ed7a9eb895382becad1af27ec65934c216e9e04
@@ -726,8 +729,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "companion-module-generic-dataentry@workspace:."
   dependencies:
-    "@companion-module/base": "npm:~1.12.1"
-    "@companion-module/tools": "npm:^2.8.0"
+    "@companion-module/base": "npm:~1.15.0"
+    "@companion-module/tools": "npm:^2.9.0"
     eslint: "npm:^9.39.5"
     numfmt: "npm:^2.5.2"
     prettier: "npm:^3.9.6"
@@ -786,13 +789,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"enhanced-resolve@npm:^5.17.1, enhanced-resolve@npm:^5.22.2":
+"enhanced-resolve@npm:^5.17.1":
   version: 5.24.3
   resolution: "enhanced-resolve@npm:5.24.3"
   dependencies:
     graceful-fs: "npm:^4.2.4"
     tapable: "npm:^2.3.3"
   checksum: 10c0/907a1c4b35901539613e080c77274e354f668da3124f7e0f595e6efed46e730c732049f500b771d2657a1f16a4a220b9852e475884b1951b6e4f1389f0d58bb1
+  languageName: node
+  linkType: hard
+
+"enhanced-resolve@npm:^5.24.4":
+  version: 5.26.1
+  resolution: "enhanced-resolve@npm:5.26.1"
+  dependencies:
+    graceful-fs: "npm:^4.2.4"
+    tapable: "npm:^2.3.3"
+  checksum: 10c0/5b5594412e2e0e67d70d28c908c3f84d7809fcf7dea8d0e3716d2c9ad2b83548fab149aae8f8c6295b46b92ea865fc8f85a7eb091df0368ce0ff18b6ca2f18ce
   languageName: node
   linkType: hard
 
@@ -1398,13 +1411,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"loader-runner@npm:^4.3.2":
-  version: 4.3.2
-  resolution: "loader-runner@npm:4.3.2"
-  checksum: 10c0/35297f2d1cadcef8995c4ba2c4e27ef397f508014c5cdcdae43456ed27d07d3bfc3e81a5460857184517a02576917363f5f8f98cb22500c124f00c33eb6ec7b1
-  languageName: node
-  linkType: hard
-
 "locate-path@npm:^5.0.0":
   version: 5.0.0
   resolution: "locate-path@npm:5.0.0"
@@ -1531,12 +1537,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nanoid@npm:^3.3.11":
-  version: 3.3.18
-  resolution: "nanoid@npm:3.3.18"
+"nanoid@npm:^3.3.20":
+  version: 3.3.20
+  resolution: "nanoid@npm:3.3.20"
   bin:
     nanoid: bin/nanoid.cjs
-  checksum: 10c0/b994b4e396730f8be2520923284e2040d61eaee55cc6d4935ef6d38d34bafdc46133eda4d3faea5073bda545aa6079d82b886caeac5c731cf9ac18bcc1301425
+  checksum: 10c0/856e8bf3bddb959d65997bd94908be030dbc5e6ed88fb3af2a638e51d1938f4d4f454c7c7231aba340775224f88b8cfd3ce1693c70471bfd05f5b6a2227c0c1e
   languageName: node
   linkType: hard
 
@@ -2132,16 +2138,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webpack-sources@npm:^3.5.0":
-  version: 3.5.1
-  resolution: "webpack-sources@npm:3.5.1"
-  checksum: 10c0/9463e6895ea0e40b243936ab338d410bec04aff3a43f0cde8cc916a16effece071990ded93c8cad2a73bd7c9b8c293fc27130e440d55df613ea20284de657dd8
+"webpack-sources@npm:^3.5.1":
+  version: 3.7.0
+  resolution: "webpack-sources@npm:3.7.0"
+  checksum: 10c0/4236c75efbac5919660de37b150f97c8d1e636982998e90283669f946870e353632b6932e7ce3ad6a03a3bd3a4f72ed30efec69986312af04b9e2e52161dc460
   languageName: node
   linkType: hard
 
-"webpack@npm:^5.105.2":
-  version: 5.108.4
-  resolution: "webpack@npm:5.108.4"
+"webpack@npm:5.109.2":
+  version: 5.109.2
+  resolution: "webpack@npm:5.109.2"
   dependencies:
     "@types/estree": "npm:^1.0.8"
     "@types/json-schema": "npm:^7.0.15"
@@ -2149,28 +2155,26 @@ __metadata:
     "@webassemblyjs/wasm-edit": "npm:^1.14.1"
     "@webassemblyjs/wasm-parser": "npm:^1.14.1"
     acorn: "npm:^8.16.0"
-    acorn-import-phases: "npm:^1.0.3"
     browserslist: "npm:^4.28.1"
     chrome-trace-event: "npm:^1.0.2"
-    enhanced-resolve: "npm:^5.22.2"
+    enhanced-resolve: "npm:^5.24.4"
     es-module-lexer: "npm:^2.1.0"
     eslint-scope: "npm:5.1.1"
     events: "npm:^3.2.0"
     graceful-fs: "npm:^4.2.11"
-    loader-runner: "npm:^4.3.2"
     mime-db: "npm:^1.54.0"
     minimizer-webpack-plugin: "npm:^5.6.1"
     neo-async: "npm:^2.6.2"
     schema-utils: "npm:^4.3.3"
     tapable: "npm:^2.3.0"
     watchpack: "npm:^2.5.2"
-    webpack-sources: "npm:^3.5.0"
+    webpack-sources: "npm:^3.5.1"
   peerDependenciesMeta:
     webpack-cli:
       optional: true
   bin:
     webpack: bin/webpack.js
-  checksum: 10c0/842a8628822f3cb82c2b0ff9c4242ba05c0dae1f306248c87dfb543bb56b86b047b5f08efff0d5c56067bfc6b245a2f4f8ad32923bee8c303d29c43172467e38
+  checksum: 10c0/524b8afe327a2452ed1d12340cf40fc9d6c65cb72108efeb704cce55ed93b8532be23e5179bbc3f537003b8de204fab0753a0050239bfcb4871cc8a2b3c1a723
   languageName: node
   linkType: hard
 
