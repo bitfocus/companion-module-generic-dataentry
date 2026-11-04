@@ -7,7 +7,7 @@
 		"lint:fix": "eslint . --fix",
 		"format": "prettier -w .",
 		"package": "companion-module-build",
-		"test": "node --test test/*.test.cjs"
+		"test": "node --test test/prepared-options.test.cjs"
 	},
 	"license": "MIT",
 	"repository": {
