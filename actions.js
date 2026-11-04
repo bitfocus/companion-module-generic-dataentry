@@ -229,7 +229,7 @@ module.exports = function (self) {
 				}
 
 				// Calculate end position
-				let endstring = await self.parseVariablesInString(options.position)
+				let endstring = await self.parseVariablesInString(options.endposition ?? '')
 				let end
 				if (endstring === '') {
 					end = null
